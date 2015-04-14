@@ -235,7 +235,7 @@ LINKDEFMAP    = $(WORKDIR)$(PACKAGE)Map_LinkDef
 HLIST         = $(filter-out $(addprefix $(INCDIR),$(EXCLUDE)) $(LINKDEF),$(wildcard $(INCDIR)*.h)) $(LINKDEF)
 CINTFILE      = $(WORKDIR)$(PACKAGE)Dict.cxx
 ifneq ($(ROOTCLING),)
-CLINGDICT     = $(CURDIR)/$(PACKAGE)Dict_rdict.pcm
+CLINGDICT     = $(SHLIBDIR)/$(PACKAGE)Dict_rdict.pcm
 endif
 CINTOBJ       = $(OBJDIR)$(PACKAGE)Dict.$(ObjSuf)
 LIBNAME       = $(PACKAGE)
