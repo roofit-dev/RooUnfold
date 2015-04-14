@@ -247,7 +247,7 @@ ROOTMAP       = $(SHLIBDIR)lib$(LIBNAME).rootmap
 ifeq ($(MAKECMDGOALS),)
 GOALS         = default
 else
-GOALS         = $(filter-out clean cleanbin help,$(MAKECMDGOALS))
+GOALS         = $(filter-out clean cleanbin help commands,$(MAKECMDGOALS))
 endif
 
 CPPFLAGS     += -DMAKEBUILD
@@ -398,7 +398,7 @@ $(CINTFILE) : $(HLIST)
 	@mkdir -p $(WORKDIR)
 	@mkdir -p $(OBJDIR)
 	@echo "Generating CINT dictionary $(CINTFILE)"
-	$(_)$(ROOTCINT)  -f $(CINTFILE) -c -p $(CPPFLAGS) $(INCLUDES) $(HLIST)
+	$(_)$(ROOTCINT) -f $(CINTFILE) -c -p $(CPPFLAGS) $(INCLUDES) $(HLIST)
 
 $(ROOTMAP) : $(SHLIBFILE) $(LINKDEF)
 	@echo "Making CINT $@"
@@ -449,7 +449,7 @@ commands :
 ifeq ($(ROOTCLING),)
 	@echo "Make dictionary:         $(ROOTCINT) -f $(CINTFILE) -c -p $(CPPFLAGS) $(INCLUDES) $(HLIST)"
 else
-	@echo "Make dictionary:         $(ROOTCLING) -f $(CINTFILE) -rml $(SHLIBFILE) -rmf $(ROOTMAP) $(CPPFLAGS) $(INCLUDES) $(HLIST)"
+	@echo "Make dictionary:         $(ROOTCLING) -f $(CINTFILE) -rml $(notdir $(SHLIBFILE)) -rmf $(ROOTMAP) $(CPPFLAGS) $(INCLUDES) $(HLIST)"
 endif
 	@echo
 	@echo "Compile $(SRCDIR)%.cxx:	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(SRCDIR)%.cxx -o $(OBJDIR)%.$(ObjSuf) $(INCLUDES)"

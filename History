@@ -3,6 +3,7 @@ History of RooUnfold     $Id$
 
 Tim Adye         14-Apr-2015
   o Make sure RooUnfoldDict_rdict.pcm is in same directory as libRooUnfold.so.
+  o Update "make commands".
 
 Tim Adye         13-Apr-2015
   More GNUmakefile fixes for ROOT6:
