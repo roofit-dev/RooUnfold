@@ -29,6 +29,7 @@ END_HTML */
 
 #include "TClass.h"
 #include "TNamed.h"
+#include "TBuffer.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TH3.h"

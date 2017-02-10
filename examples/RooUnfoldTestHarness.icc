@@ -273,7 +273,7 @@ Int_t RooUnfoldTestHarness::Train()
     hTrainTrue->Fill (xto);
     if (Eff (xt, xlo, xhi, effxlo, effxhi)) {    
       Double_t x=  Smear   (xt, ntx, xlo, xhi, xbias, xsmear);
-      Double_t xo= Overflow (x, ntx, xlo, xhi);
+      Double_t xo= Overflow (x, nmx, xlo, xhi);
       hTrain  ->Fill (xo);
       hResmat ->Fill (xo, xto);
       response->Fill (xo, xto);
@@ -339,7 +339,7 @@ Int_t RooUnfoldTestHarness::Test()
     hTrue->Fill(xto);
     if (Eff (xt, xlo, xhi, effxlo, effxhi)) {
       Double_t x = Smear   (xt, ntx, xlo, xhi, xbias, xsmear);
-      Double_t xo= Overflow (x, ntx, xlo, xhi);
+      Double_t xo= Overflow (x, nmx, xlo, xhi);
       hMeas->Fill(xo);
     }
   }
@@ -858,11 +858,11 @@ Double_t RooUnfoldTestHarness::Smear (Double_t x, Int_t nt, Double_t lo, Double_
 
 }
 
-Double_t RooUnfoldTestHarness::Overflow (Double_t x, Int_t nt, Double_t lo, Double_t hi) const
+Double_t RooUnfoldTestHarness::Overflow (Double_t x, Int_t nb, Double_t lo, Double_t hi) const
 {
   if (overflow!=2)    return x;
-  else if   (x < lo)  return lo + (hi-lo) / Double_t(2*nt);
-  else if (!(x < hi)) return hi - (hi-lo) / Double_t(2*nt);
+  else if   (x < lo)  return lo + (hi-lo) / Double_t(2*nb);
+  else if (!(x < hi)) return hi - (hi-lo) / Double_t(2*nb);
   else return x;
 }
 
@@ -953,7 +953,7 @@ void RooUnfoldTestHarness::Init()
     xlo -= xwid;
     xhi += xwid;
     ntx += 2;
-    nmx += Int_t (2.0*(Double_t(nmx)/Double_t(ntx)) + 0.5);
+    nmx += 2;
   }
   mscalex= (nmx==ntx) ? 1.0 : Double_t(nmx)/Double_t(ntx);
   ntbins= ntx;

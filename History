@@ -1,6 +1,10 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         10-Feb-2017
+  o Add #include "TBuffer.h" required since ROOT 6.08.
+  o Fix RooUnfoldTest overflow=1 or 2 when nmx!=ntx.
+
 Tim Adye         14-Apr-2015
   o Make sure RooUnfoldDict_rdict.pcm is in same directory as libRooUnfold.so.
   o Update "make commands".
