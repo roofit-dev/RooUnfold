@@ -96,6 +96,7 @@ END_HTML */
 #ifdef HAVE_DAGOSTINI
 #include "RooUnfoldDagostini.h"
 #endif
+#include "RooUnfoldIds.h"
 
 using std::vector;
 using std::cout;
@@ -122,12 +123,13 @@ RooUnfold* RooUnfold::New (Algorithm alg, const RooUnfoldResponse* res, const TH
                            const char* name, const char* title)
 {
     /*Unfolds according to the value of the alg enum:
-    0: a dummy unfold
-    1: Unfold via a Bayes method
-    2: Unfold using singlar value decomposition
-    3: Unfold bin by bin.
-    4: Unfold with TUnfold
-    5: Unfold using inversion of response matrix
+    0 = kNone:     dummy unfolding
+    1 = kBayes:    Unfold via iterative application of Bayes theorem
+    2 = kSVD:      Unfold using singlar value decomposition (SVD)
+    3 = kBinByBin: Unfold bin by bin.
+    4 = kTUnfold:  Unfold with TUnfold
+    5 = kInvert:   Unfold using inversion of response matrix
+    7 = kIDS:      Unfold using iterative dynamically stabilized (IDS) method
     */
   RooUnfold* unfold;
   switch (alg) {
@@ -162,6 +164,9 @@ RooUnfold* RooUnfold::New (Algorithm alg, const RooUnfoldResponse* res, const TH
       cerr << "RooUnfoldDagostini is not available" << endl;
       return 0;
 #endif
+    case kIDS:
+      unfold= new RooUnfoldIds      (res, meas);
+      break;
     default:
       cerr << "Unknown RooUnfold method " << Int_t(alg) << endl;
       return 0;

@@ -1,6 +1,14 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         11-Jul-2017
+  o Add IDS (iterative dynamically stabilized) unfolding implemented
+    in the RooUnfoldIds class by Chris Meyer <chris.meyer@cern.ch> using
+    the algorithm from Bogdan Malaescu <bogdan.malaescu@cern.ch>.
+    The implementation is still under development, but mostly works.
+    RooUnfoldIds's error propagation (with toys) seems to have problems,
+    but RooUnfold's toy generation (kCovToy) can be used instead.
+
 Tim Adye         10-Feb-2017
   o Add #include "TBuffer.h" required since ROOT 6.08.
   o Fix RooUnfoldTest overflow=1 or 2 when nmx!=ntx.

@@ -16,6 +16,7 @@ from ROOT import RooUnfold
 from ROOT import RooUnfoldBayes
 # from ROOT import RooUnfoldSvd
 # from ROOT import RooUnfoldTUnfold
+# from ROOT import RooUnfoldIds
 
 # ==============================================================================
 #  Gaussian smearing, systematic translation, and variable inefficiency
@@ -56,8 +57,9 @@ for i in xrange(10000):
 
 print "==================================== UNFOLD ==================================="
 unfold= RooUnfoldBayes     (response, hMeas, 4);    #  OR
-# unfold= RooUnfoldSvd     (response, hMeas, 20);   #  OR
-# unfold= RooUnfoldTUnfold (response, hMeas);
+# unfold= RooUnfoldSvd     (response, hMeas, 20);     #  OR
+# unfold= RooUnfoldTUnfold (response, hMeas);         #  OR
+# unfold= RooUnfoldIds     (response, hMeas, 3);      #  OR
 
 hReco= unfold.Hreco();
 unfold.PrintTable (cout, hTrue);

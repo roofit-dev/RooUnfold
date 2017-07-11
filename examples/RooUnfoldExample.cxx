@@ -21,6 +21,7 @@ using std::endl;
 #include "RooUnfoldBayes.h"
 //#include "RooUnfoldSvd.h"
 //#include "RooUnfoldTUnfold.h"
+//#include "RooUnfoldIds.h"
 #endif
 
 //==============================================================================
@@ -74,7 +75,8 @@ void RooUnfoldExample()
   cout << "==================================== UNFOLD ===================================" << endl;
   RooUnfoldBayes   unfold (&response, hMeas, 4);    // OR
 //RooUnfoldSvd     unfold (&response, hMeas, 20);   // OR
-//RooUnfoldTUnfold unfold (&response, hMeas);
+//RooUnfoldTUnfold unfold (&response, hMeas);       // OR
+//RooUnfoldIds     unfold (&response, hMeas, 1);
 
   TH1D* hReco= (TH1D*) unfold.Hreco();
 
