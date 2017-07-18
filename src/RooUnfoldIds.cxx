@@ -190,6 +190,11 @@ RooUnfoldIds::GetUnfoldCovMatrix(const TH2D *cov, Int_t ntoys, Int_t seed)
    // "seed"   - seed for pseudo experiments
    // Note that this covariance matrix will contain effects of forced normalisation if spectrum is normalised to unit area.
 
+   _meas1d  = HistNoOverflow(_meas            , _overflow); // data
+   _train1d = HistNoOverflow(_res->Hmeasured(), _overflow); // reco
+   _truth1d = HistNoOverflow(_res->Htruth()   , _overflow); // true
+   _reshist = _res->HresponseNoOverflow();
+
    TH1D* unfres = 0;
    TH2D* unfcov = (TH2D*)_reshist->Clone("unfcovmat");
    unfcov->SetTitle("Toy covariance matrix");
@@ -197,7 +202,7 @@ RooUnfoldIds::GetUnfoldCovMatrix(const TH2D *cov, Int_t ntoys, Int_t seed)
       for(Int_t j = 1; j <= _nb; ++j)
          unfcov->SetBinContent(i, j, 0.);
 
-   // Code for generation of toys (taken from RooResult and modified)
+   // Code for generation of toys (taken from TSVDUnfold [took from RooResult] and modified)
    // Calculate the elements of the upper-triangular matrix L that
    // gives Lt*L = C, where Lt is the transpose of L (the "square-root method")
    TMatrixD L(_nb, _nb); L *= 0;
@@ -227,7 +232,7 @@ RooUnfoldIds::GetUnfoldCovMatrix(const TH2D *cov, Int_t ntoys, Int_t seed)
    TVectorD avgtoy(_nb);
    TMatrixD toys(ntoys, _nb);
    for (Int_t j = 0; j < _nb; ++j) {
-      avgtoy[j-1] = 0.0;
+      avgtoy[j] = 0.0;
       for (Int_t i = 0; i < ntoys; ++i) {
          toys[i][j] = 0.0;
       }
@@ -267,7 +272,7 @@ RooUnfoldIds::GetUnfoldCovMatrix(const TH2D *cov, Int_t ntoys, Int_t seed)
    for (Int_t i = 0; i < ntoys; ++i) {
       for (Int_t j = 0; j < _nb; ++j) {
          for (Int_t k = 0; k < _nb; ++k) {
-            unfcov->Fill(j+1, k+1, (toys[i][j] - avgtoy[j])*(toys[i][k] - avgtoy[k])/ntoys);
+            unfcov->SetBinContent(j+1, k+1, unfcov->GetBinContent(j+1, k+1) + (toys[i][j] - avgtoy[j])*(toys[i][k] - avgtoy[k])/ntoys);
          }
       }
    }
@@ -303,7 +308,7 @@ RooUnfoldIds::GetAdetCovMatrix(Int_t ntoys, Int_t seed)
    TVectorD avgtoy(_nb);
    TMatrixD toys(ntoys, _nb);
    for (Int_t j = 0; j < _nb; ++j) {
-      avgtoy[j-1] = 0.0;
+      avgtoy[j] = 0.0;
       for (Int_t i = 0; i < ntoys; ++i) {
          toys[i][j] = 0.0;
       }
@@ -342,7 +347,7 @@ RooUnfoldIds::GetAdetCovMatrix(Int_t ntoys, Int_t seed)
    for (Int_t i = 0; i < ntoys; ++i) {
       for (Int_t j = 0; j < _nb; ++j) {
          for (Int_t k = 0; k < _nb; ++k) {
-            unfcov->Fill(j+1, k+1, (toys[i][j] - avgtoy[j])*(toys[i][k] - avgtoy[k])/ntoys);
+            unfcov->SetBinContent(j+1, k+1, unfcov->GetBinContent(j+1, k+1) + (toys[i][j] - avgtoy[j])*(toys[i][k] - avgtoy[k])/ntoys);
          }
       }
    }

@@ -1,6 +1,11 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         18-Jul-2017
+  o Add description of RooUnfoldIds to RooUnfold.cxx.
+  o Fix error propagation using toys in RooUnfoldIds.cxx.
+    Changes kindly provided by Chris Meyer.
+
 Tim Adye         11-Jul-2017
   o Add IDS (iterative dynamically stabilized) unfolding implemented
     in the RooUnfoldIds class by Chris Meyer <chris.meyer@cern.ch> using

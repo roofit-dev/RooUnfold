@@ -36,6 +36,16 @@
 <li>Can account for both smearing and biasing
 <li>Returns near singular covariance matrices, again leading to very large chi squared values
 </ul>
+<li> RooUnfoldIds: Uses the Bayes method of unfolding based on the method written by Malaescu (<a href="http://arxiv.org/abs/1106.3107">CERN-PH-EP-2011-111</a>)
+<ul>
+<li>Set the number of iterations used to improve the folding matrix
+<li>Regularisation parameters define the level at which values are deemed to be due to statistical fluctuations. Used for modifying the folding matrix, as well as unfolding.
+<li>Returns errors as a full matrix of covariances
+<li>Error processing is much the same as with the kCovToy setting with 1000 toys. This is quite slow but can be switched off.
+<li>Can handle 2 dimensional distributions
+<li>True and measured distributions must have the same binning
+<li>Can account for both smearing and biasing
+</ul>
 <li> RooUnfoldBinByBin: Unfolds using the method of correction factors.
 <ul>
 <li>Returns errors as a diagonal matrix.
