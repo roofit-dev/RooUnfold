@@ -167,6 +167,8 @@ else
 ifneq ($(HAVE_TUNFOLDSYS),1)
 CPPFLAGS     += -DNOTUNFOLDSYS
 endif
+# Add -lUnfold if the library is available (added in ROOT 6.10)
+ROOTLIBS     += $(patsubst $(ROOTLIBDIR)/lib%.$(DllSuf),-l%,$(wildcard $(patsubst %,$(ROOTLIBDIR)/lib%.$(DllSuf),Unfold)))
 endif
 
 # RooUnfoldDagostini is an interface to D'Agostini's implementation

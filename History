@@ -1,6 +1,12 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         24-Aug-2017
+  o Add #include "TBuffer.h" required since ROOT 6.08, also for RooUnfoldIds.cxx.
+  o Move unneeded include from RooUnfoldIds.h to .cxx.
+  o Link -lUnfold (for TUnfold) if available (moved out of -lHist with ROOT 6.10).
+    Bugs reported by Salvatore Rappoccio.
+
 Tim Adye         18-Jul-2017
   o Add description of RooUnfoldIds to RooUnfold.cxx.
   o Fix error propagation using toys in RooUnfoldIds.cxx.

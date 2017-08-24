@@ -10,6 +10,8 @@
 #include <iostream>
 
 #include "TClass.h"
+#include "TBuffer.h"
+#include "TRandom3.h"
 #include "TMath.h"
 #include "TH2D.h"
 

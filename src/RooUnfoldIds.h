@@ -8,12 +8,12 @@
 #define IDSUnfoldingTool_RooUnfoldIds
 
 #include "RooUnfold.h"
-#include "TRandom3.h"
 
 class RooUnfoldResponse;
 class TH1;
 class TH1D;
 class TH2D;
+class TRandom3;
 
 class RooUnfoldIds : public RooUnfold {
 
