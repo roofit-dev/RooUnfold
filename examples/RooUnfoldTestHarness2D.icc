@@ -131,12 +131,13 @@ Int_t RooUnfoldTestHarness2D::Train ()
 void RooUnfoldTestHarness2D::TrainResults()
 {
   if (mscalex!=1.0) {
-    hTrainX->Scale(mscalex);
-    if (hTrainFakeX) hTrainFakeX->Scale(mscalex);
+    // should really use Sumw2() for these, but we don't show errors
+    hTrainX->Scale(mscalex,"nosw2");
+    if (hTrainFakeX) hTrainFakeX->Scale(mscalex,"nosw2");
   }
   if (mscaley!=1.0) {
-    hTrainY->Scale(mscaley);
-    if (hTrainFakeY) hTrainFakeY->Scale(mscaley);
+    hTrainY->Scale(mscaley,"nosw2");
+    if (hTrainFakeY) hTrainFakeY->Scale(mscaley,"nosw2");
   }
   setmax (hTrainTrueX, hPDFx, hTrainX, hTrainFakeX);
   setmax (hTrainTrueY, hPDFy, hTrainY, hTrainFakeY);
@@ -217,12 +218,13 @@ Int_t RooUnfoldTestHarness2D::Test ()
 void RooUnfoldTestHarness2D::Results()
 {
   if (mscalex!=1.0) {
-    hMeasX->Scale(mscalex);
-    if (hFakeX) hFakeX->Scale(mscalex);
+    // should really use Sumw2() for these, but we don't show errors
+    hMeasX->Scale(mscalex,"nosw2");
+    if (hFakeX) hFakeX->Scale(mscalex,"nosw2");
   }
   if (mscaley!=1.0) {
-    hMeasY->Scale(mscaley);
-    if (hFakeY) hFakeY->Scale(mscaley);
+    hMeasY->Scale(mscaley,"nosw2");
+    if (hFakeY) hFakeY->Scale(mscaley,"nosw2");
   }
   setmax (hTrueX, hTestPDFx, hMeasX, hFakeX);
   setmax (hTrueY, hTestPDFy, hMeasY, hFakeY);

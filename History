@@ -1,6 +1,11 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         10-Nov-2017
+  o Apply small fixes from ROOT 6.10 to local copy of TSVDUnfold.cxx.
+  o Use "nosw2" option for TH1::Scale() in RooUnfoldTest to stop errors
+    being added in ROOT 6.08.
+
 Tim Adye         24-Aug-2017
   o Add #include "TBuffer.h" required since ROOT 6.08, also for RooUnfoldIds.cxx.
   o Move unneeded include from RooUnfoldIds.h to .cxx.

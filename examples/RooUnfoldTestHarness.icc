@@ -304,8 +304,9 @@ Int_t RooUnfoldTestHarness::Train()
 void RooUnfoldTestHarness::TrainResults()
 {
   if (mscalex!=1.0) {
-    hTrain->Scale(mscalex);
-    if (hTrainFake) hTrainFake->Scale(mscalex);
+    // should really use Sumw2() for these, but we don't show errors
+    hTrain->Scale(mscalex,"nosw2");
+    if (hTrainFake) hTrainFake->Scale(mscalex,"nosw2");
   }
   setmax (hTrainTrue, hPDFx, hTrain, hTrainFake);
 
@@ -450,9 +451,10 @@ Int_t RooUnfoldTestHarness::Unfold ()
 void RooUnfoldTestHarness::Results()
 {
   if (mscalex!=1.0) {
-    hMeas->Scale(mscalex);
-    if (hFake) hFake->Scale(mscalex);
-    if (fitFunc) fitFunc->GetHistogram()->Scale(mscalex);
+    // should really use Sumw2() for these, but we don't show errors
+    hMeas->Scale(mscalex,"nosw2");
+    if (hFake) hFake->Scale(mscalex,"nosw2");
+    if (fitFunc) fitFunc->GetHistogram()->Scale(mscalex,"nosw2");
   }
   setmax (hTrue, hTestPDFx, hMeas, hFake);
   if (hReco) {
@@ -739,7 +741,7 @@ TH1D* RooUnfoldTestHarness::Generate (TVectorD& x, const char* name, const char*
   }
   if (verbose >= 1) cout << "Generate values in range " << lo << " to " << hi << endl;
   if (!RooUnfoldTestPdf (fpdf, nx, lo, hi, x, hPDF, mean, width, bkg, verbose)) return 0;
-  hPDF->Scale (nbPDF/Double_t(nt));
+  hPDF->Scale (nbPDF/Double_t(nt), "nosw2");
   return hPDF;
 }
 
