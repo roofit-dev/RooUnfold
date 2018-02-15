@@ -1,6 +1,12 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         15-Feb-2018
+  o Always use local version of TSVDUnfold, unless explicitly disabled with
+    "make HAVE_TSVDUNFOLD=0". Previously TSVDUnfold_local.h was not included
+    for ROOT6, which gave problems with RooUnfoldSvd::Impl().
+    Problem reported by Yaxian Mao (ALICE).
+
 Tim Adye         10-Nov-2017
   o Apply small fixes from ROOT 6.10 to local copy of TSVDUnfold.cxx.
   o Use "nosw2" option for TH1::Scale() in RooUnfoldTest to stop errors

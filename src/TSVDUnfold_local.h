@@ -32,8 +32,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef TSVDUNFOLD_H
-#define TSVDUNFOLD_H
+#ifndef TSVDUNFOLD_130729_H
+#define TSVDUNFOLD_130729_H
 
 #ifndef ROOT_TObject
 #include "TObject.h"

@@ -19,7 +19,7 @@
 #pragma link C++ class RooUnfoldDagostini+;
 #endif
 #pragma link C++ class RooUnfoldIds-;
-#if defined(HAVE_TSVDUNFOLD) || ROOT_VERSION_CODE < ROOT_VERSION(5,34,99)
+#if !defined(HAVE_TSVDUNFOLD) || HAVE_TSVDUNFOLD
 #pragma link C++ class TSVDUnfold_130729+;
 #endif
 

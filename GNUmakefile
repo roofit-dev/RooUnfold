@@ -22,6 +22,7 @@
 #     To used the shared library: export LD_LIBRARY_PATH="$PWD:$LD_LIBRARY_PATH"
 #   - Add ROOTBUILD=debug for debug version.
 #   - Add VERBOSE=1 to show commands as they are executed.
+#   - Add HAVE_TSVDUNFOLD=0 to disable local version of TSVDUnfold and use version in ROOT.
 #
 # Build targets:
 #   help    - give brief help
@@ -201,8 +202,9 @@ HAVE_TSVDUNFOLD = 1
 endif
 
 ifeq ($(HAVE_TSVDUNFOLD),1)
-CPPFLAGS     += -DHAVE_TSVDUNFOLD
+CPPFLAGS     += -DHAVE_TSVDUNFOLD=1
 else
+CPPFLAGS     += -DHAVE_TSVDUNFOLD=0
 EXCLUDE      += TSVDUnfold.cxx TSVDUnfold_local.h
 endif
 

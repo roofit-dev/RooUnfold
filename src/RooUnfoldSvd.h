@@ -13,15 +13,16 @@
 #define ROOUNFOLDSVD_HH
 
 #include "RooUnfold.h"
-#if defined(HAVE_TSVDUNFOLD) || ROOT_VERSION_CODE < ROOT_VERSION(5,34,99)
-#define TSVDUnfold TSVDUnfold_130729
+#if !defined(HAVE_TSVDUNFOLD) || HAVE_TSVDUNFOLD
+#include "TSVDUnfold_local.h"  /* Use local copy of TSVDUnfold.h */
+#else
+#include "TSVDUnfold.h"
 #endif
 
 class RooUnfoldResponse;
 class TH1;
 class TH1D;
 class TH2D;
-class TSVDUnfold;
 
 class RooUnfoldSvd : public RooUnfold {
 
