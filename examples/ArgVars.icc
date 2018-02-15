@@ -25,9 +25,6 @@
 
 ArgVars::~ArgVars()
 {
-  TIter next(&lst);
-  TObject* arg;
-  while ((arg= next())) delete arg;
 }
 
 ArgVars& ArgVars::Add(const ArgVars& args)

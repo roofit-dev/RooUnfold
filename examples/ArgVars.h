@@ -29,7 +29,7 @@ private:
   ArgVar* Find (const char* name) const;
   ArgVars& Add (ArgVar* arg);
 public:
-  ArgVars() {}
+  ArgVars() { lst.SetOwner(); }
   virtual ~ArgVars();
   ArgVars& Add (const char* name,    Int_t* var) { return Add (new ArgVar (name, var)); }
   ArgVars& Add (const char* name, Double_t* var) { return Add (new ArgVar (name, var)); }

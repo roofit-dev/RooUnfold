@@ -6,6 +6,8 @@ Tim Adye         15-Feb-2018
     "make HAVE_TSVDUNFOLD=0". Previously TSVDUnfold_local.h was not included
     for ROOT6, which gave problems with RooUnfoldSvd::Impl().
     Problem reported by Yaxian Mao (ALICE).
+  o Fix double delete in RooUnfoldTest.cxx etc (actually examples/ArgVars.h)
+    for ROOT 6.12.
 
 Tim Adye         10-Nov-2017
   o Apply small fixes from ROOT 6.10 to local copy of TSVDUnfold.cxx.
