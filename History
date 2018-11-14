@@ -1,6 +1,12 @@
 History of RooUnfold     $Id$
 ====================
 
+Tim Adye         14-Nov-2018
+  o Work round a bad feature introduced in TMVA with ROOT 6.14/00, which prevented
+    RooUnfoldResponse being loaded in CLING or PyROOT.
+    See https://sft.its.cern.ch/jira/browse/ROOT-9799 .
+    Bug reported by Riccardo Di Sipio and Lu Cao.
+
 Tim Adye         15-Feb-2018
   o Always use local version of TSVDUnfold, unless explicitly disabled with
     "make HAVE_TSVDUNFOLD=0". Previously TSVDUnfold_local.h was not included

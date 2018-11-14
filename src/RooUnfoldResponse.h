@@ -26,6 +26,16 @@ class TH2D;
 class TAxis;
 class TCollection;
 
+#ifdef PrintMatrix
+// TMVA in ROOT 6.14/00 added a debugging macro called PrintMatrix in TMVA/DNN/Architectures/Cpu/CpuMatrix.h.
+// This interferes with RooUnfoldResponse::PrintMatrix below when the RooUnfoldResponse dictionary is loaded
+// (eg. if used in CLING or PyROOT). This happens despite RooUnfold and TMVA being entirely independent,
+// but presumably TMVA's macro writes all over the global modulemap.
+// The following #undef seems to work round the issue.
+// See https://sft.its.cern.ch/jira/browse/ROOT-9799 .
+#undef PrintMatrix
+#endif
+
 class RooUnfoldResponse : public TNamed {
 
 public:
