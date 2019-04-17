@@ -16,6 +16,8 @@ list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
 list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
 
+execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
+
 if(${AnalysisBase_FOUND})
   atlas_subdir( RooUnfold )
   
@@ -40,9 +42,7 @@ else()
 
   # register the shared object to include both sources and dictionaries
   add_library( RooUnfold SHARED ${RooUnfoldSources} G__RooUnfold.cxx)
-
-  execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
-  
+ 
   # link everything together at the end
   target_link_libraries( RooUnfold ${ROOT_LIBRARIES} )
   
@@ -53,7 +53,7 @@ else()
   # (this registers the build-tree with a global CMake-registry)
   export(PACKAGE RooUnfold)
   
-  set(CONF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" )
+  set(CONF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
   set(CONF_LIBRARY_DIRS "${PROJECT_BINARY_DIR}")
   set(CONF_LIBRARIES    RooUnfold)
   configure_file(RooUnfoldConfig.cmake.in
