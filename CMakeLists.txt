@@ -18,6 +18,8 @@ list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
 
 execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
 
+file(GLOB PythonTests "examples/*.py")
+
 if(${AnalysisBase_FOUND})
   atlas_subdir( RooUnfold )
   
@@ -64,5 +66,12 @@ else()
     "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
     "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
+
+  include(CTest)
+  enable_testing()  
 endif()
   
+foreach(TestScript ${PythonTests})
+  get_filename_component(TestName ${TestScript} NAME_WE)
+  add_test( NAME ${TestName} COMMAND python ${TestScript})
+endforeach()
