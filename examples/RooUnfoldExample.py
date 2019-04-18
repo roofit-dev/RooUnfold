@@ -33,11 +33,11 @@ def smear(xt):
 #  Example Unfolding
 # ==============================================================================
 
-print "==================================== TRAIN ===================================="
+print("==================================== TRAIN ====================================")
 response= RooUnfoldResponse (40, -10.0, 10.0);
 
 #  Train with a Breit-Wigner, mean 0.3 and width 2.5.
-for i in xrange(100000):
+for i in range(100000):
   xt= gRandom.BreitWigner (0.3, 2.5);
   x= smear (xt);
   if x!=None:
@@ -45,17 +45,17 @@ for i in xrange(100000):
   else:
     response.Miss (xt);
 
-print "==================================== TEST ====================================="
+print("==================================== TEST =====================================")
 hTrue= TH1D ("true", "Test Truth",    40, -10.0, 10.0);
 hMeas= TH1D ("meas", "Test Measured", 40, -10.0, 10.0);
 #  Test with a Gaussian, mean 0 and width 2.
-for i in xrange(10000):
+for i in range(10000):
   xt= gRandom.Gaus (0.0, 2.0)
   x= smear (xt);
   hTrue.Fill(xt);
   if x!=None: hMeas.Fill(x);
 
-print "==================================== UNFOLD ==================================="
+print("==================================== UNFOLD ===================================")
 unfold= RooUnfoldBayes     (response, hMeas, 4);    #  OR
 # unfold= RooUnfoldSvd     (response, hMeas, 20);     #  OR
 # unfold= RooUnfoldTUnfold (response, hMeas);         #  OR
