@@ -12,6 +12,9 @@ compile_atlas:
     - cd build
     - cmake ..
     - make    
+  artifacts:
+    paths:
+      - build
 
 compile_standalone:
   image: rootproject/root-ubuntu16  
@@ -21,6 +24,9 @@ compile_standalone:
     - cd build
     - cmake ..
     - make
+  artifacts:
+    paths:
+      - build    
 
 test_atlas:
   stage: build
@@ -31,8 +37,6 @@ test_atlas:
     - source /home/atlas/release_setup.sh
     - cd build
     - ctest
-  artifacts:
-    build
 
 test_standalone:
   image: rootproject/root-ubuntu16  
