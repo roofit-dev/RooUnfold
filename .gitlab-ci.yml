@@ -7,6 +7,7 @@ compile_atlas:
   tags:
     - cvmfs
   script:
+    - source /home/atlas/release_setup.sh
     - mkdir build
     - cd build
     - cmake ..
@@ -20,3 +21,24 @@ compile_standalone:
     - cd build
     - cmake ..
     - make
+
+test_atlas:
+  stage: build
+  image: atlas/analysisbase:21.2.64
+  tags:
+    - cvmfs
+  script:
+    - source /home/atlas/release_setup.sh
+    - cd build
+    - ctest
+  artifacts:
+    build
+
+test_standalone:
+  image: rootproject/root-ubuntu16  
+  stage: build
+  script:
+    - cd build
+    - ctest    
+
+    
