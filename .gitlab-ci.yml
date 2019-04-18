@@ -1,6 +1,10 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-
+  
+stages:
+  - build
+  - test
+  
 compile_atlas:
   stage: build
   image: atlas/analysisbase:21.2.64
@@ -17,8 +21,8 @@ compile_atlas:
       - build
 
 compile_standalone:
-  image: rootproject/root-ubuntu16  
   stage: build
+  image: rootproject/root-ubuntu16  
   script:
     - mkdir build
     - cd build
@@ -29,7 +33,7 @@ compile_standalone:
       - build    
 
 test_atlas:
-  stage: build
+  stage: test
   image: atlas/analysisbase:21.2.64
   tags:
     - cvmfs
@@ -39,8 +43,8 @@ test_atlas:
     - ctest
 
 test_standalone:
+  stage: test
   image: rootproject/root-ubuntu16  
-  stage: build
   script:
     - cd build
     - ctest    
