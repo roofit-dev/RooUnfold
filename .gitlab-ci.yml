@@ -37,6 +37,8 @@ test_atlas:
   image: atlas/analysisbase:21.2.64
   tags:
     - cvmfs
+  dependencies:
+    - compile_atlas    
   script:
     - source /home/atlas/release_setup.sh
     - cd build
@@ -45,6 +47,8 @@ test_atlas:
 test_standalone:
   stage: test
   image: rootproject/root-ubuntu16  
+  dependencies:
+    - compile_standalone    
   script:
     - cd build
     - ctest    
