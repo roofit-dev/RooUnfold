@@ -8,9 +8,7 @@ inversion, bin-by-bin (simple correction factors), and an interface to
 ROOT's TUnfold.  It can be used from the ROOT prompt, or linked
 against the ROOT libraries. It can also be used from pyROOT.
 
-For the latest version and documentation, see here
-
-    http://hepunx.rl.ac.uk/~adye/software/unfold/RooUnfold.html
+For the latest version and documentation, consult the [webpage](http://hepunx.rl.ac.uk/~adye/software/unfold/RooUnfold.html).
 
 RooUnfold was written by Tim Adye, Kerstin Tackmann, and Fergus Wilson.
 
