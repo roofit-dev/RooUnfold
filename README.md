@@ -1,5 +1,5 @@
 RooUnfold
-#########
+=========
 
 RooUnfold is a framework for unfolding (AKA "deconvolution" or
 "unsmearing").  It currently implements several methods: iterative
