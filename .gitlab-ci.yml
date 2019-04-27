@@ -73,6 +73,7 @@ compile_GNUmake_dAgostini:
   before_script:
     - sudo apt-get update
     - sudo apt-get install wget
+    - export FC=gfortran
     - bash get_dagos_bayes.sh
 
 ############################################           
