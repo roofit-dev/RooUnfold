@@ -42,7 +42,7 @@ stages:
 .GNUmake: &GNUmake    
   stage: build
   script:
-    make -j4
+    make -j1
   artifacts:
     paths:
       - libRooUnfold.so
