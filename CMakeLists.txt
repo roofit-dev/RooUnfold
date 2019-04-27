@@ -11,10 +11,14 @@ find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics)
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
 file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
-file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
-list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
-list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
+  
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes_c.for)
+  message("disabling d'Agostini implementation")
+  file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
+  list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
+  list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
+endif()
 
 execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
 
