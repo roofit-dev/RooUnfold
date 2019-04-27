@@ -35,6 +35,9 @@ stages:
     - cd build
     - cmake ..
     - make
+  artifacts:
+    paths:
+      - build
 
 .GNUmake: &GNUmake    
   stage: build
