@@ -6,13 +6,14 @@ cmake_minimum_required(VERSION 2.8)
 
 find_package(AnalyissBase QUIET)
 
-find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics)
+find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
 file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
-  
+file(GLOB RooUnfoldExecSources examples/*.cxx)
+
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes_c.for)
   message("disabling d'Agostini implementation")
   file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
@@ -37,6 +38,14 @@ if(${AnalysisBase_FOUND})
     PUBLIC_HEADERS RooUnfold
     PRIVATE_INCLUDE_DIRS ${ROOT_INCLUDE_DIRS}
     PRIVATE_LINK_LIBRARIES ${ROOT_LIBRARIES})
+
+  foreach(ExecSource ${RooUnfoldExecSources})
+    get_filename_component(ExecName ${ExecSource} NAME_WE)    
+    atlas_add_executable( ${ExecName} ${ExecSource}
+      INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} RooUnfold
+      LINK_LIBRARIES ${ROOT_LIBRARIES} RooUnfold)      
+    )
+  endforeach()
 else()
   # register all the files and directories
   include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -72,10 +81,21 @@ else()
     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
 
   include(CTest)
-  enable_testing()  
+  enable_testing()
+
+  foreach(ExecSource ${RooUnfoldExecSources})
+    get_filename_component(ExecName ${ExecSource} NAME_WE)    
+    add_executable( ${ExecName} ${ExecSource} )
+    target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} )
+  endforeach()
 endif()
-  
+
+foreach(ExecSource ${RooUnfoldExecSources})
+  get_filename_component(ExecName ${ExecSource} NAME_WE)
+  get_filename_component(TestName ${ExecSource} NAME)      
+  add_test( NAME ${TestName} COMMAND ${ExecName})
+endforeach()
 foreach(TestScript ${PythonTests})
-  get_filename_component(TestName ${TestScript} NAME_WE)
+  get_filename_component(TestName ${TestScript} NAME)
   add_test( NAME ${TestName} COMMAND python ${TestScript})
 endforeach()
