@@ -71,6 +71,8 @@ compile_GNUmake_dAgostini:
   <<: *standalone
   <<: *GNUmake  
   before_script:
+    - sudo apt-get update
+    - sudo apt-get install wget
     - bash get_dagos_bayes.sh
 
 ############################################           
