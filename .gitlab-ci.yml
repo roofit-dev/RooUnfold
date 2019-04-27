@@ -1,56 +1,105 @@
+############################################
+## global settings & macros
+############################################     
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   
 stages:
   - build
   - test
-  
-compile_atlas:
-  stage: build
+  - doc
+
+.latex: &latex
+  stage: doc
+  image: blang/latex:ubuntu
+
+.atlas: &atlas
   image: atlas/analysisbase:21.2.64
-  tags:
-    - cvmfs
-  script:
+  before_script:
     - source /home/atlas/release_setup.sh
+
+.standalone: &standalone    
+  image: rootproject/root-ubuntu16  
+
+.ctest: &ctest  
+  script:
+    - cd build
+    - ctest
+
+.cmake: &cmake    
+  script:
     - mkdir build
     - cd build
     - cmake ..
     - make    
+
+############################################
+## building
+############################################     
+    
+compile_atlas:
+  <<: *atlas
+  <<: *cmake
+  stage: build
   artifacts:
     paths:
       - build
 
 compile_standalone:
+  <<: *standalone
+  <<: *cmake
   stage: build
-  image: rootproject/root-ubuntu16  
-  script:
-    - mkdir build
-    - cd build
-    - cmake ..
-    - make
   artifacts:
     paths:
       - build    
 
+############################################           
+## testing      
+############################################
+
 test_atlas:
+  <<: *atlas
+  <<: *ctest  
   stage: test
-  image: atlas/analysisbase:21.2.64
-  tags:
-    - cvmfs
   dependencies:
     - compile_atlas    
-  script:
-    - source /home/atlas/release_setup.sh
-    - cd build
-    - ctest
 
 test_standalone:
+  <<: *standalone
+  <<: *ctest  
   stage: test
-  image: rootproject/root-ubuntu16  
   dependencies:
     - compile_standalone    
-  script:
-    - cd build
-    - ctest    
 
+############################################         
+## documentation
+############################################
+
+doc_bayes_errors:
+  <<: *latex
+  script:
+    - cd doc/bayes_errors
+    - pdflatex bayes_errors.tex
+  artifacts:
+    paths:
+      - doc/bayes_errors/bayes_errors.pdf
     
+doc_phystat2011:
+  <<: *latex
+  script:
+    - cd doc/phystat2011
+    - pdflatex phystat2011_adye.tex
+  artifacts:
+    paths:
+      - doc/phystat2011/phystat2011_adye.pdf
+
+doc_unfolding2011:      
+  <<: *latex
+  script:
+    - cd doc/unfolding2010
+    - pdflatex adye_tim.tex
+  artifacts:
+    paths:
+      - doc/unfolding2011/adye_tim.pdf
+
