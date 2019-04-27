@@ -135,7 +135,7 @@ endif
 PACKAGE       = RooUnfold
 SRCDIR        = $(CURDIR)/src/
 INCDIR        = $(SRCDIR)
-WORKDIR       = $(CURDIR)/tmp/$(ARCH)/
+WORKDIR       = $(CURDIR)/build/$(ARCH)/
 LIBDIR        = $(CURDIR)/
 SHLIBDIR      = $(CURDIR)/
 EXEDIR        =
