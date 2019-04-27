@@ -44,7 +44,6 @@ if(${AnalysisBase_FOUND})
     atlas_add_executable( ${ExecName} ${ExecSource}
       INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} RooUnfold
       LINK_LIBRARIES ${ROOT_LIBRARIES} RooUnfold)      
-    )
   endforeach()
 else()
   # register all the files and directories
