@@ -61,9 +61,9 @@ compile_GNUmake:
     make -j4
   artifacts:
     paths:
-      - *.so
-      - *.pcm
-      - *.rootmap
+      - libRooUnfold.so
+      - RooUnfoldDict_rdict.pcm
+      - libRooUnfold.rootmap
 
 ############################################           
 ## testing      
