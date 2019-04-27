@@ -23,39 +23,20 @@ stages:
   image: rootproject/root-ubuntu16  
 
 .ctest: &ctest  
+  stage: test
   script:
     - cd build
     - ctest
 
 .cmake: &cmake    
+  stage: build
   script:
     - mkdir build
     - cd build
     - cmake ..
-    - make    
+    - make
 
-############################################
-## building
-############################################     
-    
-compile_atlas:
-  <<: *atlas
-  <<: *cmake
-  stage: build
-  artifacts:
-    paths:
-      - build
-
-compile_standalone:
-  <<: *standalone
-  <<: *cmake
-  stage: build
-  artifacts:
-    paths:
-      - build
-
-compile_GNUmake:
-  <<: *standalone
+.GNUmake: &GNUmake    
   stage: build
   script:
     make -j4
@@ -65,6 +46,33 @@ compile_GNUmake:
       - RooUnfoldDict_rdict.pcm
       - libRooUnfold.rootmap
 
+.GNUtest: &GNUtest          
+  stage: test
+  script:
+    - python examples/RooUnfoldExample.py
+
+############################################
+## building
+############################################     
+    
+compile_atlas:
+  <<: *atlas
+  <<: *cmake
+
+compile_standalone:
+  <<: *standalone
+  <<: *cmake
+
+compile_GNUmake:
+  <<: *standalone
+  <<: *GNUmake  
+
+compile_GNUmake_dAgostini:
+  <<: *standalone
+  <<: *GNUmake  
+  before_script:
+    - bash get_dagos_bayes.sh
+
 ############################################           
 ## testing      
 ############################################
@@ -72,24 +80,20 @@ compile_GNUmake:
 test_atlas:
   <<: *atlas
   <<: *ctest  
-  stage: test
   dependencies:
     - compile_atlas    
 
 test_standalone:
   <<: *standalone
   <<: *ctest  
-  stage: test
   dependencies:
     - compile_standalone
 
 test_GNUmake:
   <<: *standalone
-  stage: test
+  <<: *GNUtest
   dependencies:
     - compile_GNUmake
-  script:
-    - python examples/RooUnfoldExample.py
 
 ############################################         
 ## documentation

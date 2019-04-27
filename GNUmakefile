@@ -277,7 +277,9 @@ SRCLIST       = $(filter-out $(EXCLUDE),$(notdir $(wildcard $(SRCDIR)*.cxx))) $(
 OLIST         = $(addprefix $(OBJDIR),$(addsuffix .$(ObjSuf),$(basename $(SRCLIST))))
 
 ifneq ($(filter %.for,$(SRCLIST)),)
-GCCLIBS       = -lg2c
+  ifeq ($(findstring 77,$(FC)),77)
+	GCCLIBS       = -lg2c
+  endif	
 endif
 
 ROOTLIBFILES := $(wildcard $(patsubst -l%,$(ROOTLIBDIR)/lib%.$(DllSuf),$(filter -l%,$(ROOTLIBS))))
