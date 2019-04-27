@@ -52,7 +52,18 @@ compile_standalone:
   stage: build
   artifacts:
     paths:
-      - build    
+      - build
+
+compile_GNUmake:
+  <<: *standalone
+  stage: build
+  script:
+    make -j4
+  artifacts:
+    paths:
+      - *.so
+      - *.pcm
+      - *.rootmap
 
 ############################################           
 ## testing      
@@ -70,7 +81,15 @@ test_standalone:
   <<: *ctest  
   stage: test
   dependencies:
-    - compile_standalone    
+    - compile_standalone
+
+test_GNUmake:
+  <<: *standalone
+  stage: test
+  dependencies:
+    - compile_GNUmake
+  script:
+    - python examples/RooUnfoldExample.py
 
 ############################################         
 ## documentation
