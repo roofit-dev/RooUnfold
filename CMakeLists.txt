@@ -3,27 +3,41 @@
 ################################################################################
 
 cmake_minimum_required(VERSION 2.8)
+enable_language (Fortran)
 
 find_package(AnalyissBase QUIET)
 
 find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
+set(RooUnfoldDagostini ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes.for)
 file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
 file(GLOB RooUnfoldExecSources examples/*.cxx)
 
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes_c.for)
+if(EXISTS ${RooUnfoldDagostini})
+  set(EXTRA_FLAGS "-DHAVE_DAGOSTINI")
+else()
   message("disabling d'Agostini implementation")
   file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
   list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
   list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
+  set(RooUnfoldDagostini "")  
 endif()
 
 execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
 
 file(GLOB PythonTests "examples/*.py")
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}")
+
+get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+if (Fortran_COMPILER_NAME MATCHES "gfortran")
+  set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none")
+elseif (Fortran_COMPILER_NAME MATCHES "g77")
+  set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
+endif()
 
 if(${AnalysisBase_FOUND})
   atlas_subdir( RooUnfold )
@@ -52,10 +66,10 @@ else()
 
   # generate the dictionary source code
   include(${ROOT_USE_FILE})
-  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef})
+  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
 
   # register the shared object to include both sources and dictionaries
-  add_library( RooUnfold SHARED ${RooUnfoldSources} G__RooUnfold.cxx)
+  add_library( RooUnfold SHARED ${RooUnfoldSources} ${RooUnfoldDagostini} G__RooUnfold.cxx)
  
   # link everything together at the end
   target_link_libraries( RooUnfold ${ROOT_LIBRARIES} )
