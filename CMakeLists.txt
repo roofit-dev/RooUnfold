@@ -3,26 +3,41 @@
 ################################################################################
 
 cmake_minimum_required(VERSION 2.8)
+enable_language (Fortran)
 
 find_package(AnalyissBase QUIET)
 
-find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics)
+find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
+set(RooUnfoldDagostini ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes.for)
 file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
-  
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes_c.for)
+file(GLOB RooUnfoldExecSources examples/*.cxx)
+
+if(EXISTS ${RooUnfoldDagostini})
+  set(EXTRA_FLAGS "-DHAVE_DAGOSTINI")
+else()
   message("disabling d'Agostini implementation")
   file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
   list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
   list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
+  set(RooUnfoldDagostini "")  
 endif()
 
 execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
 
 file(GLOB PythonTests "examples/*.py")
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}")
+
+get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+if (Fortran_COMPILER_NAME MATCHES "gfortran")
+  set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none")
+elseif (Fortran_COMPILER_NAME MATCHES "g77")
+  set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
+endif()
 
 if(${AnalysisBase_FOUND})
   atlas_subdir( RooUnfold )
@@ -37,6 +52,13 @@ if(${AnalysisBase_FOUND})
     PUBLIC_HEADERS RooUnfold
     PRIVATE_INCLUDE_DIRS ${ROOT_INCLUDE_DIRS}
     PRIVATE_LINK_LIBRARIES ${ROOT_LIBRARIES})
+
+  foreach(ExecSource ${RooUnfoldExecSources})
+    get_filename_component(ExecName ${ExecSource} NAME_WE)    
+    atlas_add_executable( ${ExecName} ${ExecSource}
+      INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} RooUnfold
+      LINK_LIBRARIES ${ROOT_LIBRARIES} RooUnfold)      
+  endforeach()
 else()
   # register all the files and directories
   include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -44,10 +66,10 @@ else()
 
   # generate the dictionary source code
   include(${ROOT_USE_FILE})
-  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef})
+  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
 
   # register the shared object to include both sources and dictionaries
-  add_library( RooUnfold SHARED ${RooUnfoldSources} G__RooUnfold.cxx)
+  add_library( RooUnfold SHARED ${RooUnfoldSources} ${RooUnfoldDagostini} G__RooUnfold.cxx)
  
   # link everything together at the end
   target_link_libraries( RooUnfold ${ROOT_LIBRARIES} )
@@ -72,10 +94,21 @@ else()
     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
 
   include(CTest)
-  enable_testing()  
+  enable_testing()
+
+  foreach(ExecSource ${RooUnfoldExecSources})
+    get_filename_component(ExecName ${ExecSource} NAME_WE)    
+    add_executable( ${ExecName} ${ExecSource} )
+    target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} )
+  endforeach()
 endif()
-  
+
+foreach(ExecSource ${RooUnfoldExecSources})
+  get_filename_component(ExecName ${ExecSource} NAME_WE)
+  get_filename_component(TestName ${ExecSource} NAME)      
+  add_test( NAME ${TestName} COMMAND ${ExecName})
+endforeach()
 foreach(TestScript ${PythonTests})
-  get_filename_component(TestName ${TestScript} NAME_WE)
+  get_filename_component(TestName ${TestScript} NAME)
   add_test( NAME ${TestName} COMMAND python ${TestScript})
 endforeach()
