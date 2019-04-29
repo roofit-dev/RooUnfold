@@ -7,7 +7,7 @@ enable_language (Fortran)
 
 find_package(AnalyissBase QUIET)
 
-find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit)
+find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit Graf Postscript Gpad)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
 set(RooUnfoldDagostini ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes.for)
@@ -56,7 +56,7 @@ if(${AnalysisBase_FOUND})
   foreach(ExecSource ${RooUnfoldExecSources})
     get_filename_component(ExecName ${ExecSource} NAME_WE)    
     atlas_add_executable( ${ExecName} ${ExecSource}
-      INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} RooUnfold
+      INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} RooUnfold ${CMAKE_CURRENT_SOURCE_DIR}/examples ${CMAKE_CURRENT_SOURCE_DIR}/src
       LINK_LIBRARIES ${ROOT_LIBRARIES} RooUnfold)      
   endforeach()
 else()
