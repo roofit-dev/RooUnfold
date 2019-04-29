@@ -118,6 +118,7 @@ doc_bayes_errors:
   script:
     - cd doc/bayes_errors
     - pdflatex bayes_errors.tex
+    - pdflatex bayes_errors.tex
   artifacts:
     paths:
       - doc/bayes_errors/bayes_errors.pdf
@@ -127,11 +128,12 @@ doc_phystat2011:
   script:
     - cd doc/phystat2011
     - pdflatex phystat2011_adye.tex
+    - pdflatex phystat2011_adye.tex    
   artifacts:
     paths:
       - doc/phystat2011/phystat2011_adye.pdf
 
-doc_unfolding2011:      
+doc_unfolding2010:      
   <<: *latex
   script:
     - cd doc/unfolding2010
@@ -139,4 +141,5 @@ doc_unfolding2011:
   artifacts:
     paths:
       - doc/unfolding2010/adye_tim.pdf
+      - doc/unfolding2010/adye_tim.pdf      
 
