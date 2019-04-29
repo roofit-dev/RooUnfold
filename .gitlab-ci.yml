@@ -138,5 +138,5 @@ doc_unfolding2011:
     - pdflatex adye_tim.tex
   artifacts:
     paths:
-      - doc/unfolding2011/adye_tim.pdf
+      - doc/unfolding2010/adye_tim.pdf
 
