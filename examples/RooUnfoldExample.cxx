@@ -16,6 +16,7 @@ using std::endl;
 
 #include "TRandom.h"
 #include "TH1D.h"
+#include "TCanvas.h"
 
 #include "RooUnfoldResponse.h"
 #include "RooUnfoldBayes.h"
@@ -80,11 +81,16 @@ void RooUnfoldExample()
 
   TH1D* hReco= (TH1D*) unfold.Hreco();
 
+  TCanvas* c1= new TCanvas("canvas","canvas");
+
   unfold.PrintTable (cout, hTrue);
   hReco->Draw();
   hMeas->Draw("SAME");
   hTrue->SetLineColor(8);
   hTrue->Draw("SAME");
+
+  c1->SaveAs("RooUnfoldExample.pdf");
+
 }
 
 #ifndef __CINT__
