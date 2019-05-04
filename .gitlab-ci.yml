@@ -4,6 +4,7 @@
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  PYTHONUNBUFFERED: 1
   
 stages:
   - build
@@ -26,7 +27,12 @@ stages:
   stage: test
   script:
     - cd build
-    - ctest
+    - source setup.sh
+    - ctest --output-on-failure
+  artifacts:
+    when: on_failure
+    paths:
+      - "*.ref"    
 
 .cmake: &cmake    
   stage: build
@@ -52,7 +58,12 @@ stages:
 .GNUtest: &GNUtest          
   stage: test
   script:
-    - python examples/RooUnfoldExample.py
+    - python -u examples/RooUnfoldExample.py > RooUnfoldExample.ref
+    - diff RooUnfoldExample.ref ref/RooUnfoldExample.py.ref
+  artifacts:
+    when: on_failure    
+    paths:
+      - "*.ref"        
 
 .dAgostini: &dAgostini
   <<: *standalone

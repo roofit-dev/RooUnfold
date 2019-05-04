@@ -28,7 +28,7 @@ endif()
 
 execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
 
-file(GLOB PythonTests "examples/*.py")
+file(GLOB Tests "test/*.sh")
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}")
 
@@ -39,8 +39,17 @@ elseif (Fortran_COMPILER_NAME MATCHES "g77")
   set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
 endif()
 
+set(SETUP ${CMAKE_CURRENT_BINARY_DIR}/setup.sh)
+file(WRITE ${SETUP} "#!/bin/bash\n")
+file(APPEND ${SETUP} "# this is an auto-generated setup script\n" )
+
+
 if(${AnalysisBase_FOUND})
   atlas_subdir( RooUnfold )
+
+  file(APPEND ${SETUP} "export PATH=\${PATH}:${CMAKE_CURRENT_BINARY_DIR}/${BINARY_TAG}/bin\n")  
+  file(APPEND ${SETUP} "export PYTHONPATH=\${PYTHONPATH}:${CMAKE_CURRENT_BINARY_DIR}/${BINARY_TAG}/python\n")  
+  file(APPEND ${SETUP} "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${CMAKE_CURRENT_BINARY_DIR}/${BINARY_TAG}/lib\n")  
   
   atlas_add_root_dictionary( RooUnfold _dictSource
     ROOT_HEADERS
@@ -64,6 +73,10 @@ else()
   include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
   include_directories ("${ROOT_INCLUDE_DIRS}")
 
+  file(APPEND ${SETUP} "export PATH=\${PATH}:${CMAKE_CURRENT_BINARY_DIR}\n")  
+  file(APPEND ${SETUP} "export PYTHONPATH=\${PYTHONPATH}:${CMAKE_CURRENT_BINARY_DIR}\n")
+  file(APPEND ${SETUP} "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${CMAKE_CURRENT_BINARY_DIR}\n")  
+  
   # generate the dictionary source code
   include(${ROOT_USE_FILE})
   ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
@@ -103,12 +116,11 @@ else()
   endforeach()
 endif()
 
-foreach(ExecSource ${RooUnfoldExecSources})
-  get_filename_component(ExecName ${ExecSource} NAME_WE)
-  get_filename_component(TestName ${ExecSource} NAME)      
-  add_test( NAME ${TestName} COMMAND ${ExecName})
-endforeach()
-foreach(TestScript ${PythonTests})
+foreach(TestScript ${Tests})
   get_filename_component(TestName ${TestScript} NAME)
-  add_test( NAME ${TestName} COMMAND python ${TestScript})
+  add_test(
+    NAME ${TestName}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND bash ${TestScript}
+    )
 endforeach()
