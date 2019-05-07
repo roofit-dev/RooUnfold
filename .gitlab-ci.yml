@@ -59,7 +59,7 @@ stages:
   stage: test
   script:
     - python -u examples/RooUnfoldExample.py > RooUnfoldExample.ref
-    - diff RooUnfoldExample.ref ref/RooUnfoldExample.py.ref
+    - diff RooUnfoldExample.ref ref/RooUnfoldExample.py.bayes.ref
   artifacts:
     when: on_failure    
     paths:

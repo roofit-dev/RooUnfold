@@ -10,13 +10,12 @@
 #
 # ==============================================================================
 
-from ROOT import gRandom, TH1, TH1D, cout
-from ROOT import RooUnfoldResponse
-from ROOT import RooUnfold
-from ROOT import RooUnfoldBayes
-# from ROOT import RooUnfoldSvd
-# from ROOT import RooUnfoldTUnfold
-# from ROOT import RooUnfoldIds
+import sys
+method = "bayes"
+if len(sys.argv) > 1: method = sys.argv[1]
+
+from ROOT import gRandom, TH1, TH1D, TCanvas, cout
+import ROOT
 
 # ==============================================================================
 #  Gaussian smearing, systematic translation, and variable inefficiency
@@ -33,7 +32,7 @@ def smear(xt):
 #  Example Unfolding
 # ==============================================================================
 
-response= RooUnfoldResponse (40, -10.0, 10.0);
+response= ROOT.RooUnfoldResponse (40, -10.0, 10.0);
 
 #  Train with a Breit-Wigner, mean 0.3 and width 2.5.
 for i in range(100000):
@@ -53,14 +52,24 @@ for i in range(10000):
   hTrue.Fill(xt);
   if x!=None: hMeas.Fill(x);
 
-unfold= RooUnfoldBayes     (response, hMeas, 4);    #  OR
-# unfold= RooUnfoldSvd     (response, hMeas, 20);     #  OR
-# unfold= RooUnfoldTUnfold (response, hMeas);         #  OR
-# unfold= RooUnfoldIds     (response, hMeas, 3);      #  OR
+if method == "bayes":
+  unfold= ROOT.RooUnfoldBayes     (response, hMeas, 4);    #  OR
+elif method == "svd":
+  unfold= ROOT.RooUnfoldSvd     (response, hMeas, 20);     #  OR
+elif method == "root":
+  unfold= RooUnfoldTUnfold (response, hMeas);         #  OR
+elif method == "ids":
+  unfold= RooUnfoldIds     (response, hMeas, 3);      #  OR
 
 hReco= unfold.Hreco();
+
 unfold.PrintTable (cout, hTrue);
+
+canvas = ROOT.TCanvas("RooUnfold",method)
+
 hReco.Draw();
 hMeas.Draw("SAME");
 hTrue.SetLineColor(8);
 hTrue.Draw("SAME");
+
+canvas.SaveAs("RooUnfold.pdf")
