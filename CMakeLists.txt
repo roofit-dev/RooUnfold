@@ -5,7 +5,16 @@
 cmake_minimum_required(VERSION 2.8)
 enable_language (Fortran)
 
-find_package(AnalyissBase QUIET)
+find_package(AnalysisBase QUIET)
+find_package(AthAnalysis QUIET)
+
+if (${AnalysisBase_FOUND} OR ${AthAnalysis_FOUND})
+  message ("Configuring for build within analysis release")
+  set (foundAnalysisRelease  1)
+else() 
+  set (foundAnalysisRelease  0)
+endif()
+
 
 find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit Graf Postscript Gpad)
 
@@ -44,9 +53,8 @@ file(WRITE ${SETUP} "#!/bin/bash\n")
 file(APPEND ${SETUP} "# this is an auto-generated setup script\n" )
 
 
-if(${AnalysisBase_FOUND})
+if(${foundAnalysisRelease})
   atlas_subdir( RooUnfold )
-
   file(APPEND ${SETUP} "export PATH=\${PATH}:${CMAKE_CURRENT_BINARY_DIR}/${BINARY_TAG}/bin\n")  
   file(APPEND ${SETUP} "export PYTHONPATH=\${PYTHONPATH}:${CMAKE_CURRENT_BINARY_DIR}/${BINARY_TAG}/python\n")  
   file(APPEND ${SETUP} "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${CMAKE_CURRENT_BINARY_DIR}/${BINARY_TAG}/lib\n")  
@@ -55,6 +63,13 @@ if(${AnalysisBase_FOUND})
     ROOT_HEADERS
     ${RooUnfoldHeaders}
     ${RooUnfoldLinkDef})
+
+  # Ensure that the 'RooUnfold' folder expected by atlas_add_library exists at source level
+  # by linking the appropriate files from src/ 
+  set( _RooUnfold_header_dir ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfold )
+  file(MAKE_DIRECTORY ${_RooUnfold_header_dir})
+  execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${_RooUnfold_header_dir} )
+
   
   atlas_add_library( RooUnfold
     ${RooUnfoldHeaders} ${RooUnfoldSources} ${_dictSource}
