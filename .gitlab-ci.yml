@@ -34,6 +34,33 @@ stages:
     paths:
       - "*.ref"    
 
+.atlasctest: &atlasctest  
+  stage: test
+  script:
+    - cd build
+    - source ${AnalysisBase_PLATFORM}/setup.sh
+    - TERM=vt100 ctest --output-on-failure
+  artifacts:
+    when: on_failure
+    paths:
+      - "*.ref"    
+
+.atlascmake: &atlascmake    
+  stage: build
+  script:
+    - mkdir source 
+    - mkdir source/RooUnfold 
+    - ls | grep -v source | xargs -i mv {} source/RooUnfold/
+    - mv source/RooUnfold/CMakeLists_forAtlasCI.txt source/CMakeLists.txt
+    - mkdir build
+    - cd build
+    - cmake ../source
+    - make
+  artifacts:
+    paths:
+      - build
+      - source
+
 .cmake: &cmake    
   stage: build
   script:
@@ -79,7 +106,7 @@ stages:
     
 compile_atlas:
   <<: *atlas
-  <<: *cmake
+  <<: *atlascmake
 
 compile_cmake:
   <<: *standalone
@@ -104,7 +131,7 @@ compile_GNUmake_dAgostini:
 
 test_atlas:
   <<: *atlas
-  <<: *ctest  
+  <<: *atlasctest  
   dependencies:
     - compile_atlas    
 
