@@ -34,6 +34,17 @@ stages:
     paths:
       - "*.ref"    
 
+.atlasctest: &atlasctest  
+  stage: test
+  script:
+    - cd build
+    - source ${AnalysisBase_PLATFORM}/setup.sh
+    - ctest --output-on-failure
+  artifacts:
+    when: on_failure
+    paths:
+      - "*.ref"    
+
 .atlascmake: &atlascmake    
   stage: build
   script:
@@ -115,7 +126,7 @@ compile_GNUmake_dAgostini:
 
 test_atlas:
   <<: *atlas
-  <<: *ctest  
+  <<: *atlasctest  
   dependencies:
     - compile_atlas    
 
