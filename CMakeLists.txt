@@ -2,6 +2,12 @@
 # Project: RooUnfold
 ################################################################################
 
+if (${RunningAtlasCI})
+  message("Setup for CI in ATLAS analysis release")
+  include (CMakeLists_forAtlasCI.txt)
+endif()
+
+
 cmake_minimum_required(VERSION 2.8)
 enable_language (Fortran)
 
