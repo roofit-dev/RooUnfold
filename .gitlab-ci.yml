@@ -39,7 +39,7 @@ stages:
   script:
     - cd build
     - source ${AnalysisBase_PLATFORM}/setup.sh
-    - ctest --output-on-failure
+    - TERM=vt100 ctest --output-on-failure
   artifacts:
     when: on_failure
     paths:
@@ -48,9 +48,13 @@ stages:
 .atlascmake: &atlascmake    
   stage: build
   script:
+    - cd ..
+    - mkdir source 
+    - mv RooUnfold source/
+    - mv source/RooUnfold/CMakeLists_forAtlasCI.txt source/CMakeLists.txt
     - mkdir build
     - cd build
-    - cmake -DRunningAtlasCI=1 ..
+    - cmake ../source
     - make
   artifacts:
     paths:
