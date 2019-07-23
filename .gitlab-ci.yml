@@ -59,6 +59,7 @@ stages:
   artifacts:
     paths:
       - build
+      - source
 
 .cmake: &cmake    
   stage: build
