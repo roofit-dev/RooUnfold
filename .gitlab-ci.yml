@@ -37,7 +37,7 @@ stages:
 .atlasctest: &atlasctest  
   stage: test
   script:
-    - cd build
+    - cd ../build
     - source ${AnalysisBase_PLATFORM}/setup.sh
     - TERM=vt100 ctest --output-on-failure
   artifacts:
@@ -58,7 +58,7 @@ stages:
     - make
   artifacts:
     paths:
-      - build
+      - ../build
 
 .cmake: &cmake    
   stage: build
