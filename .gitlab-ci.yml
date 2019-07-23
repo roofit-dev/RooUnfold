@@ -37,7 +37,7 @@ stages:
 .atlasctest: &atlasctest  
   stage: test
   script:
-    - cd ../build
+    - cd build
     - source ${AnalysisBase_PLATFORM}/setup.sh
     - TERM=vt100 ctest --output-on-failure
   artifacts:
@@ -50,7 +50,8 @@ stages:
   script:
     - cd ..
     - mkdir source 
-    - mv RooUnfold source/
+    - mkdir source/RooUnfold 
+    - ls | grep -v source | xargs -i mv {} source/RooUnfold/
     - mv source/RooUnfold/CMakeLists_forAtlasCI.txt source/CMakeLists.txt
     - mkdir build
     - cd build
@@ -58,7 +59,7 @@ stages:
     - make
   artifacts:
     paths:
-      - ../build
+      - build
 
 .cmake: &cmake    
   stage: build
