@@ -48,7 +48,6 @@ stages:
 .atlascmake: &atlascmake    
   stage: build
   script:
-    - cd ..
     - mkdir source 
     - mkdir source/RooUnfold 
     - ls | grep -v source | xargs -i mv {} source/RooUnfold/
