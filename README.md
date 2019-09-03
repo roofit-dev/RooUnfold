@@ -19,7 +19,15 @@ refer to this web page and/or the paper:
 Tim Adye, in Proceedings of the PHYSTAT 2011 Workshop on Statistical
 Issues Related to Discovery Claims in Search Experiments and
 Unfolding, CERN, Geneva, Switzerland, 17–20 January 2011, edited by
-H.B. Prosper and L. Lyons, CERN–2011–006, pp. 313–318.
+H.B. Prosper and L. Lyons, CERN–2011–006, pp. 313–318
+  - [proceedings, CDS version](https://cdsweb.cern.ch/record/1306523)
+  - [proceedings, refactored version](https://roounfold.web.cern.ch/phystat2011_adye.pdf)
+  - [slides, original version](https://indico.cern.ch/event/107747/contributions/32673/)
+  - [slides, refactored version](https://roounfold.web.cern.ch/adye_tim.pdf)
+
+Corrected error calculation for iterative Bayesian unfolding
+  - [original version](http://hepunx.rl.ac.uk/~adye/software/unfold/bayes_errors.pdf)
+  - [refactored version](https://roounfold.web.cern.ch/bayes_errors.pdf)
 
 Unfolding Method
 ---
@@ -142,8 +150,8 @@ Multi-dimensional distributions can also be unfolded, though this does
 not work for the SVD method, and the interface is rather clumsy (we
 hope to improve this).
 
-See the class documentation for details of the `RooUnfold` and
-`RooUnfoldResponse public` methods.
+See the [class documentation](https://roounfold.web.cern.ch) for
+details of the `RooUnfold` and `RooUnfoldResponse public` methods.
 
 A very simple example of RooUnfold's use is given in
 `examples/RooUnfoldExample.cxx`. More complete tests, using different

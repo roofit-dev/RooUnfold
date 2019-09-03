@@ -194,7 +194,8 @@ doc_unfolding2010:
   <<: *latex
   script:
     - cd doc/unfolding2010
-    - pdflatex adye_tim.tex
+    - latex adye_tim.tex
+    - dvipdf adye_tim.dvi
   artifacts:
     paths:
       - doc/unfolding2010/adye_tim.pdf
