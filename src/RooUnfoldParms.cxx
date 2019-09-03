@@ -10,9 +10,8 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-
-<p>Allows user to optimise the regularisation parameter of an unfolding technique.</p>
+/*! \class RooUnfoldParms
+  \brief Allows user to optimise the regularisation parameter of an unfolding technique.
 <p>If the true distribution is unknown, a plot of the rms of the errors is returned for each regularisation parameter (GetErr()).</p>
 <p>If the true distribution is known, the following plots can be returned:
 <ul>
@@ -23,8 +22,7 @@
 <p>For each regularisaion parameter in the predefined range, the measured distribution is unfolded. For each unfolded distribution residuals are plotted and rms found for the 
 rms spread. The sum of the residuals over the whole distribution are calculated,divided by the number of bins and then rooted in order to 
 return an rms. The chi squared values are calculated using the chi2() method in RooUnfold.</p>
-
- END_HTML */
+ */
 ////////////////////////////////////////////////////////////////
 
 #include "RooUnfoldParms.h"

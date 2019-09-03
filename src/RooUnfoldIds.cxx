@@ -1,8 +1,9 @@
 // Author: Bogdan Malaescu <bogdan.malaescu@cern.ch>
 // Author: Christopher Meyer <chris.meyer@cern.ch>
 //
-// Inspired by Tim Adye code for RooUnfoldSvd
-// For support, contact: chris.meyer@cern.ch
+/*! \class RooUnfoldIds 
+   \brief Inspired by Tim Adye code for RooUnfoldSvd.  For support, contact: chris.meyer@cern.ch
+*/
 
 #include "RooUnfoldIds.h"
 #include "RooUnfoldResponse.h"
@@ -35,7 +36,7 @@ RooUnfoldIds::RooUnfoldIds(const RooUnfoldResponse *res, const TH1 *meas, Int_t 
 , _lambdaMmin(0.5)
 , _lambdaS(0.)
 {
-   // Constructor with response matrix object and measured unfolding input histogram.
+   //! Constructor with response matrix object and measured unfolding input histogram.
    Init();
 }
 
@@ -99,7 +100,7 @@ RooUnfoldIds::CopyData(const RooUnfoldIds &rhs)
 void
 RooUnfoldIds::Unfold()
 {
-   // Data and MC reco/truth must have the same number of bins
+   //! Data and MC reco/truth must have the same number of bins
    if (_res->FakeEntries()) {
       _nb = _nt+1;
       if (_nm>_nb) _nb = _nm;
@@ -185,12 +186,12 @@ RooUnfoldIds::GetCov()
 TH2D*
 RooUnfoldIds::GetUnfoldCovMatrix(const TH2D *cov, Int_t ntoys, Int_t seed)
 {
-   // Determine for given input error matrix covariance matrix of unfolded
-   // spectrum from toy simulation given the passed covariance matrix on measured spectrum
-   // "cov"    - covariance matrix on the measured spectrum, to be propagated
-   // "ntoys"  - number of pseudo experiments used for the propagation
-   // "seed"   - seed for pseudo experiments
-   // Note that this covariance matrix will contain effects of forced normalisation if spectrum is normalised to unit area.
+   //! Determine for given input error matrix covariance matrix of unfolded
+   //! spectrum from toy simulation given the passed covariance matrix on measured spectrum
+   //! "cov"    - covariance matrix on the measured spectrum, to be propagated
+   //! "ntoys"  - number of pseudo experiments used for the propagation
+   //! "seed"   - seed for pseudo experiments
+   //! Note that this covariance matrix will contain effects of forced normalisation if spectrum is normalised to unit area.
 
    _meas1d  = HistNoOverflow(_meas            , _overflow); // data
    _train1d = HistNoOverflow(_res->Hmeasured(), _overflow); // reco
@@ -286,10 +287,10 @@ RooUnfoldIds::GetUnfoldCovMatrix(const TH2D *cov, Int_t ntoys, Int_t seed)
 TH2D*
 RooUnfoldIds::GetAdetCovMatrix(Int_t ntoys, Int_t seed)
 {
-   // Determine covariance matrix of unfolded spectrum from finite statistics in
-   // response matrix using pseudo experiments
-   // "ntoys"  - number of pseudo experiments used for the propagation
-   // "seed"   - seed for pseudo experiments
+   //! Determine covariance matrix of unfolded spectrum from finite statistics in
+   //! response matrix using pseudo experiments
+   //! "ntoys"  - number of pseudo experiments used for the propagation
+   //! "seed"   - seed for pseudo experiments
 
    _meas1d  = HistNoOverflow(_meas            , _overflow); // data
    _train1d = HistNoOverflow(_res->Hmeasured(), _overflow); // reco
@@ -504,7 +505,7 @@ RooUnfoldIds::MCnormalizationCoeffIter(const TVectorD *vd, const TVectorD *errvd
 void
 RooUnfoldIds::IdsUnfold( const TVectorD &b, const TVectorD &errb, const TMatrixD &A, const Int_t dim, const Double_t lambda, TVectorD *soustr_, TVectorD *unf)
 {
-   // compute the mc true and reco spectra and normalize them
+   //! compute the mc true and reco spectra and normalize them
    TVectorD reco_mcN(dim), true_mcN(dim);
    Double_t estNkd = 0., Nkd = 0. , Nmc = 0.;
    for(Int_t i=0; i<dim; i++ ){
@@ -696,7 +697,7 @@ RooUnfoldIds::GetSqrtMatrix( const TMatrixD& covMat )
 void
 RooUnfoldIds::GenGaussRnd( TArrayD& v, const TMatrixD& sqrtMat, TRandom3& R )
 {
-   // generate vector of correlated Gaussian-distributed random numbers
+   //! generate vector of correlated Gaussian-distributed random numbers
    // sanity check
    const Int_t size = sqrtMat.GetNrows();
    if (size != v.GetSize()) {
@@ -726,7 +727,7 @@ RooUnfoldIds::GenGaussRnd( TArrayD& v, const TMatrixD& sqrtMat, TRandom3& R )
 void
 RooUnfoldIds::Streamer(TBuffer &R__b)
 {
-   // Stream an object of class RooUnfoldIds.
+   //! Stream an object of class RooUnfoldIds.
    if (R__b.IsReading()) {
       // Don't add our histograms to the currect directory.
       // We own them and we don't want them to disappear when the file is closed.

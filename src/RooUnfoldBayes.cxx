@@ -10,15 +10,15 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-<p>Links to the RooUnfoldBayesImpl class which uses Bayesian unfolding to reconstruct the truth distribution.</p>
+/*! \class RooUnfoldBayes 
+  \brief Links to the RooUnfoldBayesImpl class which uses Bayesian unfolding to reconstruct the truth distribution.
 <p>Works for 2 and 3 dimensional distributions
 <p>Returned errors can be either as a diagonal matrix or as a full matrix of covariances
 <p>Regularisation parameter sets the number of iterations used in the unfolding (default=4)
 <p>Is able to account for bin migration and smearing
 <p>Can unfold if test and measured distributions have different binning.
 <p>Returns covariance matrices with conditions approximately that of the machine precision. This occasionally leads to very large chi squared values
-END_HTML */
+*/
 
 /////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ ClassImp (RooUnfoldBayes);
 RooUnfoldBayes::RooUnfoldBayes (const RooUnfoldBayes& rhs)
   : RooUnfold (rhs)
 {
-  // Copy constructor.
+  //! Copy constructor.
   Init();
   CopyData (rhs);
 }
@@ -60,14 +60,14 @@ RooUnfoldBayes::RooUnfoldBayes (const RooUnfoldResponse* res, const TH1* meas, I
                                 const char* name, const char* title)
   : RooUnfold (res, meas, name, title), _niter(niter), _smoothit(smoothit)
 {
-  // Constructor with response matrix object and measured unfolding input histogram.
-  // The regularisation parameter is niter (number of iterations).
+  //! Constructor with response matrix object and measured unfolding input histogram.
+  //! The regularisation parameter is niter (number of iterations).
   Init();
 }
 
 RooUnfoldBayes* RooUnfoldBayes::Clone (const char* newname) const
 {
-  // Creates a copy of the RooUnfoldBayes object
+  //! Creates a copy of the RooUnfoldBayes object
   RooUnfoldBayes* unfold= new RooUnfoldBayes(*this);
   if (newname && strlen(newname)) unfold->SetName(newname);
   return unfold;
@@ -132,7 +132,7 @@ void RooUnfoldBayes::GetSettings()
 
 TMatrixD& RooUnfoldBayes::H2M (const TH2* h, TMatrixD& m, Bool_t overflow)
 {
-  // TH2 -> TMatrixD
+  //! TH2 -> TMatrixD
   if (!h) return m;
   Int_t first= overflow ? 0 : 1;
   Int_t nm= m.GetNrows(), nt= m.GetNcols();
@@ -189,9 +189,9 @@ void RooUnfoldBayes::setup()
 //-------------------------------------------------------------------------
 void RooUnfoldBayes::unfold()
 {
-  // Calculate the unfolding matrix.
-  // _niter = number of iterations to perform (3 by default).
-  // _smoothit = smooth the matrix in between iterations (default false).
+  //! Calculate the unfolding matrix.
+  //! _niter = number of iterations to perform (3 by default).
+  //! _smoothit = smooth the matrix in between iterations (default false).
 
   TMatrixD PEjCi(_ne,_nc), PEjCiEff(_ne,_nc);
   for (Int_t i = 0 ; i < _nc ; i++) {
@@ -341,7 +341,7 @@ void RooUnfoldBayes::getCovariance()
   if (_dosys!=2) {
     if (verbose()>=1) cout << "Calculating covariances due to number of measured events" << endl;
 
-    // Create the covariance matrix of result from that of the measured distribution
+    //! Create the covariance matrix of result from that of the measured distribution
     _cov.ResizeTo (_nc, _nc);
 #ifdef OLDERRS
     const TMatrixD& Dprop= _Mij;
@@ -384,10 +384,10 @@ void RooUnfoldBayes::getCovariance()
 //-------------------------------------------------------------------------
 void RooUnfoldBayes::smooth(TVectorD& PbarCi) const
 {
-  // Smooth unfolding distribution. PbarCi is the array of proababilities
-  // to be smoothed PbarCi; nevts is the numbers of events
-  // (needed to calculate suitable errors for the smearing).
-  // PbarCi is returned with the smoothed distribution.
+  //! Smooth unfolding distribution. PbarCi is the array of proababilities
+  //! to be smoothed PbarCi; nevts is the numbers of events
+  //! (needed to calculate suitable errors for the smearing).
+  //! PbarCi is returned with the smoothed distribution.
 
   if (_res->GetDimensionTruth() != 1) {
     cerr << "Smoothing only implemented for 1-D distributions" << endl;
@@ -403,8 +403,8 @@ Double_t RooUnfoldBayes::getChi2(const TVectorD& prob1,
                                  const TVectorD& prob2,
                                  Double_t nevents) const
 {
-  // calculate the chi^2. prob1 and prob2 are the probabilities
-  // and nevents is the number of events used to calculate the probabilities
+  //! calculate the chi^2. prob1 and prob2 are the probabilities
+  //! and nevents is the number of events used to calculate the probabilities
   Double_t chi2= 0.0;
   Int_t n= prob1.GetNrows();
   if (verbose()>=2) cout << "chi2 " << n << " " << nevents << endl;
@@ -426,7 +426,7 @@ void RooUnfoldBayes::Print(Option_t* option) const
   RooUnfold::Print (option);
   if (_nc<=0 || _ne<=0) return;
 
-  // Print out some useful info of progress so far
+  //! Print out some useful info of progress so far
 
   cout << "-------------------------------------------" << endl;
   cout << "Unfolding Algorithm" << endl;

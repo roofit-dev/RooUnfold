@@ -10,13 +10,13 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-<p>Links to TSVDUnfold class which unfolds using Singular Value Decomposition (SVD).</p>
+/*! \class RooUnfoldSvd
+   \brief Links to TSVDUnfold class which unfolds using Singular Value Decomposition (SVD).</p>
 <p>Regularisation parameter defines the level at which values are deemed to be due to statistical fluctuations and are cut out. (Default= number of bins/2)
 <p>Returns errors as a full matrix of covariances
 <p>Can only handle 1 dimensional distributions
 <p>Can account for both smearing and biasing
-END_HTML */
+ */
 
 /////////////////////////////////////////////////////////////
 
@@ -48,7 +48,7 @@ ClassImp (RooUnfoldSvd);
 RooUnfoldSvd::RooUnfoldSvd (const RooUnfoldSvd& rhs)
   : RooUnfold (rhs)
 {
-  // Copy constructor.
+  //! Copy constructor.
   Init();
   CopyData (rhs);
 }
@@ -57,8 +57,8 @@ RooUnfoldSvd::RooUnfoldSvd (const RooUnfoldResponse* res, const TH1* meas, Int_t
                             const char* name, const char* title)
   : RooUnfold (res, meas, name, title), _kreg(kreg ? kreg : res->GetNbinsTruth()/2)
 {
-  // Constructor with response matrix object and measured unfolding input histogram.
-  // The regularisation parameter is kreg.
+  //! Constructor with response matrix object and measured unfolding input histogram.
+  //! The regularisation parameter is kreg.
   Init();
 }
 
@@ -66,7 +66,7 @@ RooUnfoldSvd::RooUnfoldSvd (const RooUnfoldResponse* res, const TH1* meas, Int_t
                             const char* name, const char* title)
   : RooUnfold (res, meas, name, title), _kreg(kreg ? kreg : res->GetNbinsTruth()/2)
 {
-  // Constructor with old ntoyssvd argument. No longer required.
+  //! Constructor with old ntoyssvd argument. No longer required.
   Init();
   _NToys = ntoyssvd;
 }
@@ -233,7 +233,7 @@ RooUnfoldSvd::GetCov()
 
 void RooUnfoldSvd::GetWgt()
 {
-  // Get weight matrix
+  //! Get weight matrix
   if (_dosys) RooUnfold::GetWgt();   // can't add sys errors to weight, so calculate weight from covariance
   if (!_svd) return;
   Bool_t oldstat= TH1::AddDirectoryStatus();
@@ -266,7 +266,7 @@ void RooUnfoldSvd::GetSettings(){
 
 void RooUnfoldSvd::Streamer (TBuffer &R__b)
 {
-  // Stream an object of class RooUnfoldSvd.
+  //! Stream an object of class RooUnfoldSvd.
   if (R__b.IsReading()) {
     // Don't add our histograms to the currect directory.
     // We own them and we don't want them to disappear when the file is closed.
