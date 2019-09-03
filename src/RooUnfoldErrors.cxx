@@ -10,9 +10,8 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-
-<p> A graph drawing class to view the errors associated with an unfolding technique</p>
+/*! \class RooUnfoldErrors
+\brief A graph drawing class to view the errors associated with an unfolding technique</p>
 <p>Before these can be run, the RooUnfoldErrors object must be created and the operation Plotting() run on the object in order to do the 
 maths needed to plot these graphs. The object requires the number of toys over which the errors are calculated and a RooUnfold object.</p>
 <p>For each iteration each bin in the measured distribution is added to a random number from a gaussian with a width based on the error in that bin. This is then unfolded and the results plotted for each bin. The rms in each bin is then used as the spread of the values in every bin. This gives errors that are slightly larger than those returned by RooUnfold, but are a better representation of the spread in the data.</p> 
@@ -27,7 +26,7 @@ maths needed to plot these graphs. The object requires the number of toys over w
  (0 for a simple calculation, 1 or 2 for a method based on the covariance matrix, depending on the method used for calculation of errors.). </p>
 <p>On some occasions the chi squared value can be very large. This is due to the covariance matrices being near singular and thus 
 difficult to invert reliably. A warning will be displayed if this is the case. To plot the chi squared distribution use the option Draw("chi2"), to filter out the larger values use Draw("chi2","abs(chi2 < max") where max is the largest value to be included.</p> 
-END_HTML */
+ */
 /////////////////////////////////////////////////////////////////
 
 #include "RooUnfoldErrors.h"
@@ -76,7 +75,7 @@ RooUnfoldErrors::~RooUnfoldErrors()
 void 
 RooUnfoldErrors::GraphParameters()
 {
-    //Gets graph size parameters//
+    //!Gets graph size parameters
     const TH1* HR=unfold->response()->Htruth();
     ntx=unfold->response()->GetNbinsTruth();
     if (HR->GetDimension()==1) {
@@ -93,7 +92,7 @@ TNtuple*
 RooUnfoldErrors::Chi2()
 {   
     if (!hchi2) return hchi2;
-    //Returns TNtuple of chi squared values. 
+    //!Returns TNtuple of chi squared values. 
     hchi2->SetFillColor(4);
     return hchi2;
 }
@@ -101,7 +100,7 @@ RooUnfoldErrors::Chi2()
 TH1*
 RooUnfoldErrors::RMSResiduals(){
     if (!h_err_res) return h_err_res;
-    //Returns a TH1D of the spread of the reconstructed points//
+    //!Returns a TH1D of the spread of the reconstructed points
     h_err_res->SetMarkerColor(kRed);
     h_err_res->SetMarkerStyle(4);
     h_err_res->SetMinimum(0);
@@ -111,7 +110,7 @@ RooUnfoldErrors::RMSResiduals(){
 TH1* 
 RooUnfoldErrors::UnfoldingError(){
     if (!h_err) return h_err;
-    //Returns a TH1D of the errors from the unfolding// 
+    //!Returns a TH1D of the errors from the unfolding
     h_err->SetMarkerColor(kBlue);
     h_err->SetLineColor(kBlue);
     h_err->SetMarkerStyle(24);
@@ -123,7 +122,7 @@ RooUnfoldErrors::UnfoldingError(){
 void
 RooUnfoldErrors::CreatePlots()
 {
-    /*Gets the values for plotting. Compares unfolding errors with errors calculated from toy MC.*/
+  //! Gets the values for plotting. Compares unfolding errors with errors calculated from toy MC.
 
     Bool_t oldstat= TH1::AddDirectoryStatus();
     TH1::AddDirectory (kFALSE);
@@ -145,8 +144,8 @@ RooUnfoldErrors::CreatePlots()
 void
 RooUnfoldErrors::CreatePlotsWithChi2()
 {
-    /*Gets the values for plotting. Uses the Runtoy method from RooUnfold to get plots to analyse for
-    spread and error on the unfolding. Can also give values for a chi squared plot if a truth distribution is known*/
+  //! Gets the values for plotting. Uses the Runtoy method from RooUnfold to get plots to analyse for
+  //! spread and error on the unfolding. Can also give values for a chi squared plot if a truth distribution is known
 
     const Double_t maxchi2=1e10;
 

@@ -10,8 +10,8 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-<p>Uses the unfolding method implemented in ROOT's <a href="http://root.cern.ch/root/html/TUnfold.html">TUnfold</a> class
+/*! \class RooUnfoldTUnfold
+  \brief Uses the unfolding method implemented in ROOT's <a href="http://root.cern.ch/root/html/TUnfold.html">TUnfold</a> class
 <p>Only included in ROOT versions 5.22 and higher
 <p>Only able to reconstruct 1 dimensional distributions
 <p>Can account for bin migration and smearing
@@ -19,8 +19,8 @@
 <p>Will sometimes warn of "unlinked" bins. These are bins with 0 entries and do not effect the results of the unfolding
 <p>Regularisation parameter can be either optimised internally by plotting log10(chi2 squared) against log10(tau). The 'kink' in this curve is deemed the optimum tau value. This value can also be set manually (FixTau)
 <p>The latest version (TUnfold 15 in ROOT 2.27.04) will not handle plots with an additional underflow bin. As a result overflows must be turned off
-if v15 of TUnfold is used. ROOT versions 5.26 or below use v13 and so should be safe to use overflows.</ul>
-END_HTML */
+if v15 of TUnfold is used. ROOT versions 5.26 or below use v13 and so should be safe to use overflows.
+ */
 
 /////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ ClassImp (RooUnfoldTUnfold);
 RooUnfoldTUnfold::RooUnfoldTUnfold (const RooUnfoldTUnfold& rhs)
   : RooUnfold (rhs)
 {
-  // Copy constructor.
+  //! Copy constructor.
   Init();
   CopyData (rhs);
 }
@@ -60,7 +60,7 @@ RooUnfoldTUnfold::RooUnfoldTUnfold (const RooUnfoldResponse* res, const TH1* mea
                             const char* name, const char* title)
   : RooUnfold (res, meas, name, title),_reg_method(reg)
 {
-  // Constructor with response matrix object and measured unfolding input histogram.
+  //! Constructor with response matrix object and measured unfolding input histogram.
   Init();
 }
 
@@ -68,8 +68,8 @@ RooUnfoldTUnfold::RooUnfoldTUnfold (const RooUnfoldResponse* res, const TH1* mea
                             const char* name, const char* title)
   : RooUnfold (res, meas, name, title),_reg_method(reg)
 {
-  // Constructor with response matrix object and measured unfolding input histogram.
-  // This one uses a fixed regularisation parameter, tau.
+  //! Constructor with response matrix object and measured unfolding input histogram.
+  //! This one uses a fixed regularisation parameter, tau.
   Init();
   FixTau(tau);
 }
@@ -86,7 +86,7 @@ RooUnfoldTUnfold::Destroy()
 RooUnfoldTUnfold*
 RooUnfoldTUnfold::Clone (const char* newname) const
 {
-  // Clones object
+  //! Clones object
   RooUnfoldTUnfold* unfold= new RooUnfoldTUnfold(*this);
   if (newname && strlen(newname)) unfold->SetName(newname);
   return unfold;
@@ -95,7 +95,7 @@ RooUnfoldTUnfold::Clone (const char* newname) const
 void
 RooUnfoldTUnfold::Reset()
 {
-  // Resets all values
+  //! Resets all values
   Destroy();
   Init();
   RooUnfold::Reset();
@@ -135,35 +135,35 @@ RooUnfoldTUnfold::Init()
 
 TUnfold* RooUnfoldTUnfold::Impl()
 {
-  // Return TUnfold object used to implement the unfolding for RooUnfoldTUnfold.
+  //! Return TUnfold object used to implement the unfolding for RooUnfoldTUnfold.
   return _unf;
 }
 
 const TGraph* RooUnfoldTUnfold::GetLCurve() const
 {
-  // If an L curve scan has been done (tau not fixed by user),
-  // return the L curve as graph
+  //! If an L curve scan has been done (tau not fixed by user),
+  //! return the L curve as graph
   return _lCurve;
 }
 
 const TSpline* RooUnfoldTUnfold::GetLogTauX() const
 {
-  // If an L curve scan has been done (tau not fixed by user),
-  // return the spline of x-coordinates vs tau for the L curve
+  //! If an L curve scan has been done (tau not fixed by user),
+  //! return the spline of x-coordinates vs tau for the L curve
   return _logTauX;
 }
 
 const TSpline* RooUnfoldTUnfold::GetLogTauY() const
 {
-  // If an L curve scan has been done (tau not fixed by user),
-  // return the spline of y-coordinates vs tau for the L curve
+  //! If an L curve scan has been done (tau not fixed by user),
+  //! return the spline of y-coordinates vs tau for the L curve
   return _logTauY;
 }
 
 void
 RooUnfoldTUnfold::Unfold()
 {
-  // Does the unfolding. Uses the optimal value of the unfolding parameter unless a value has already been set using FixTau
+  //! Does the unfolding. Uses the optimal value of the unfolding parameter unless a value has already been set using FixTau
 
   if (_nm<_nt)     cerr << "Warning: fewer measured bins than truth bins. TUnfold may not work correctly." << endl;
   if (_haveCovMes) cerr << "Warning: TUnfold does not account for bin-bin correlations on measured input"    << endl;
@@ -271,7 +271,7 @@ RooUnfoldTUnfold::Unfold()
 void
 RooUnfoldTUnfold::GetCov()
 {
-  //Gets Covariance matrix
+  //!Gets Covariance matrix
   if (!_unf) return;
   TH2D* ematrix= new TH2D ("ematrix","error matrix", _nt, 0.0, _nt, _nt, 0.0, _nt);
   if (_dosys!=2) _unf->GetEmatrix (ematrix);
@@ -298,7 +298,7 @@ RooUnfoldTUnfold::GetCov()
 void
 RooUnfoldTUnfold::FixTau(Double_t tau)
 {
-  // Fix regularisation parameter to a specified value
+  //! Fix regularisation parameter to a specified value
   _tau=tau;
   tau_set=true;
 }
@@ -306,7 +306,7 @@ RooUnfoldTUnfold::FixTau(Double_t tau)
 void
 RooUnfoldTUnfold::SetRegMethod(TUnfold::ERegMode regmethod)
 {
-  /*
+  /*!
     Specifies the regularisation method:
 
       regemthod setting             regularisation
@@ -322,7 +322,7 @@ RooUnfoldTUnfold::SetRegMethod(TUnfold::ERegMode regmethod)
 void
 RooUnfoldTUnfold::OptimiseTau()
 {
-  // Choose optimal regularisation parameter
+  //! Choose optimal regularisation parameter
   tau_set=false;
 }
 

@@ -10,12 +10,12 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-<p> Uses the correction factor method to unfold the distribution by looking at each bin individually.</p>
+/*! \class RooUnfoldBinByBin 
+  \brief Uses the correction factor method to unfold the distribution by looking at each bin individually.
 <p> This method cannot account for bin migration and as such cannot unfold reliably if a bias/smearing effects are applied.</p>
 <p>Can only handle 1 dimensional distributions
 <p>True and measured distributions must have the same binning
-END_HTML */
+*/
 
 /////////////////////////////////////////////////////////////
 
@@ -40,7 +40,7 @@ RooUnfoldBinByBin::RooUnfoldBinByBin (const RooUnfoldResponse* res, const TH1* m
                             const char* name, const char* title)
   : RooUnfold (res, meas, name, title)
 {
-  // Constructor with response matrix object and measured unfolding input histogram.
+  //! Constructor with response matrix object and measured unfolding input histogram.
   GetSettings();
 }
 
@@ -51,7 +51,7 @@ RooUnfoldBinByBin::~RooUnfoldBinByBin()
 RooUnfoldBinByBin*
 RooUnfoldBinByBin::Clone (const char* newname) const
 {
-    //Clones object
+    //!Clones object
   RooUnfoldBinByBin* unfold= new RooUnfoldBinByBin(*this);
   if (newname && strlen(newname)) unfold->SetName(newname);
   return unfold;

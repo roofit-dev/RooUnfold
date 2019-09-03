@@ -12,11 +12,11 @@
 //==============================================================================
 
 //____________________________________________________________
-/* BEGIN_HTML
-<p>The simplest method of unfolding works by simply inverting the response matrix.</p> 
+/*! \class RooUnfoldInvert
+    \brief The simplest method of unfolding works by simply inverting the response matrix.
 <p>This is not accurate for small matrices and produces inaccurate unfolded distributions.</p>
 <p>The inversion method is included largely to illustrate the necessity of a more effective method of unfolding</p>
-END_HTML */
+*/
 
 /////////////////////////////////////////////////////////////
 
@@ -41,7 +41,7 @@ ClassImp (RooUnfoldInvert);
 RooUnfoldInvert::RooUnfoldInvert (const RooUnfoldInvert& rhs)
   : RooUnfold (rhs)
 {
-  // Copy constructor.
+  //! Copy constructor.
   Init();
 }
 
@@ -49,7 +49,7 @@ RooUnfoldInvert::RooUnfoldInvert (const RooUnfoldResponse* res, const TH1* meas,
                                   const char* name, const char* title)
   : RooUnfold (res, meas, name, title)
 {
-  // Constructor with response matrix object and measured unfolding input histogram.
+  //! Constructor with response matrix object and measured unfolding input histogram.
   Init();
 }
 
