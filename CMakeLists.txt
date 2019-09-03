@@ -21,6 +21,10 @@ else()
   set (foundAnalysisRelease  0)
 endif()
 
+# The project version number.
+set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
+set(VERSION_MINOR   12   CACHE STRING "Project minor version number.")
+mark_as_advanced(VERSION_MAJOR VERSION_MINOR)
 
 find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit Graf Postscript Gpad)
 
@@ -142,3 +146,27 @@ foreach(TestScript ${Tests})
     COMMAND bash ${TestScript}
     )
 endforeach()
+
+# first we can indicate the documentation build as an option and set it to ON by default
+option(BUILD_DOC "Build documentation" ON)
+
+# check if Doxygen is installed
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # set input and output files
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")
+
+    # note the option ALL which allows to build the docs together with the application
+    add_custom_target( doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM )
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)

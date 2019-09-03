@@ -10,10 +10,18 @@ stages:
   - build
   - test
   - doc
+  - deploy
 
 .latex: &latex
   stage: doc
   image: blang/latex:ubuntu
+
+.doxygen: &doxygen
+  stage: doc
+  image: rootproject/root-ubuntu16  
+  before_script:
+    - sudo apt-get update
+    - sudo apt-get install -y doxygen texlive-font-utils
 
 .atlas: &atlas
   image: atlas/analysisbase:21.2.64
@@ -151,6 +159,17 @@ test_GNUmake:
 ## documentation
 ############################################
 
+doxygen:
+  <<: *doxygen
+  artifacts:
+    paths:
+      - build/doxygen
+  script:
+    - mkdir -p build
+    - cd build
+    - cmake ..
+    - make doxygen
+
 doc_bayes_errors:
   <<: *latex
   script:
@@ -181,3 +200,35 @@ doc_unfolding2010:
       - doc/unfolding2010/adye_tim.pdf
       - doc/unfolding2010/adye_tim.pdf      
 
+############################################         
+## documentation
+############################################
+
+pages:
+   # Custom docker image providing the needed tools to deploy in DFS
+  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+
+  script:
+  - mkdir -p public
+  - mv build/doxygen/html/* public
+  - mv doc/*/*.pdf public
+  - deploy-dfs
+
+  before_script: []
+  after_script: []
+
+  stage: deploy
+
+  dependencies:
+    - doxygen
+    - doc_bayes_errors
+    - doc_phystat2011
+    - doc_unfolding2010
+
+  artifacts:
+    name: "RooUnfoldDoc_${CI_COMMIT_REF_NAME}"
+    expire_in: 6 mos
+    paths:
+    - public
+
+  when: manual
