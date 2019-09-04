@@ -12,6 +12,11 @@ RooUnfold was written by Tim Adye, Richard Claridge, Kerstin Tackmann,
 and Fergus Wilson. It can be used from the ROOT prompt, or linked
 against the ROOT libraries.
 
+There is extensive documentation available online:
+  - the excellent [http://statisticalmethods.web.cern.ch/StatisticalMethods/unfolding/RooUnfold_01-Methods/](RooUnfold tutorial) by Vince Croft
+  - auto-generated [doxygen class documentation](http://roounfold.web.cern.ch/)
+  - the [https://gitlab.cern.ch/RooUnfold/RooUnfold](README) of the package itself
+
 See this overview of RooUnfold or the references below for more
 information. To cite the RooUnfold package in a publication, you can
 refer to this web page and/or the paper:
