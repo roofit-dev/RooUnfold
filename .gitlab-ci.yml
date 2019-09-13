@@ -175,6 +175,8 @@ document_help:
   stage: doc
   dependencies:
     - compile_cmake
+  before_script:
+    - source setup.sh
   script:
     - ./build/RooUnfoldTest -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest.txt 
     - ./build/RooUnfoldTest2D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest2D.txt 
