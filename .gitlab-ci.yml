@@ -174,15 +174,14 @@ document_help:
   <<: *standalone
   stage: doc
   dependencies:
-    - compile_GNUmake
+    - compile_cmake
   script:
-    - mkdir doc
-    - ./RooUnfoldTest -h | awk '/^Usage:/,0{print $0"\r"}' > doc/RooUnfoldTest.txt 
-    - ./RooUnfoldTest2D -h | awk '/^Usage:/,0{print $0"\r"}' > doc/RooUnfoldTest2D.txt 
-    - ./RooUnfoldTest3D -h | awk '/^Usage:/,0{print $0"\r"}' > doc/RooUnfoldTest3D.txt 
+    - ./build/RooUnfoldTest -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest.txt 
+    - ./build/RooUnfoldTest2D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest2D.txt 
+    - ./build/RooUnfoldTest3D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest3D.txt 
   artifacts:
     paths:
-      - doc/RooUnfoldTest*.txt
+      - RooUnfoldTest*.txt
 
 doc_bayes_errors:
   <<: *latex
@@ -227,7 +226,7 @@ pages:
   - mkdir -p public
   - mv build/doxygen/html/* public
   - mv doc/*/*.pdf public
-  - mv doc/RooUnfoldTest*.txt public
+  - mv RooUnfoldTest*.txt public
   - deploy-dfs
 
   before_script: []
