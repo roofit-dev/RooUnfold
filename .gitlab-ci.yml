@@ -227,6 +227,7 @@ pages:
   - mkdir -p public
   - mv build/doxygen/html/* public
   - mv doc/*/*.pdf public
+  - mv doc/RooUnfoldTest*.txt public
   - deploy-dfs
 
   before_script: []
@@ -236,6 +237,7 @@ pages:
 
   dependencies:
     - doxygen
+    - document_help
     - doc_bayes_errors
     - doc_phystat2011
     - doc_unfolding2010
