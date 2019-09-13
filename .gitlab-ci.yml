@@ -170,6 +170,20 @@ doxygen:
     - cmake ..
     - make doxygen
 
+document_help:
+  <<: *standalone
+  stage: doc
+  dependencies:
+    - compile_GNUmake
+  script:
+    - mkdir doc
+    - ./RooUnfoldTest -h | awk '/^Usage:/,0{print $0"\r"}' > doc/RooUnfoldTest.txt 
+    - ./RooUnfoldTest2D -h | awk '/^Usage:/,0{print $0"\r"}' > doc/RooUnfoldTest2D.txt 
+    - ./RooUnfoldTest3D -h | awk '/^Usage:/,0{print $0"\r"}' > doc/RooUnfoldTest3D.txt 
+  artifacts:
+    paths:
+      - doc/RooUnfoldTest*.txt
+
 doc_bayes_errors:
   <<: *latex
   script:
