@@ -3,7 +3,7 @@ Release notes
 
 Version [2.0.0](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/2.0.0)
 ---
-N.N.
+16 September 2019
 
 First new release in 8 years collects all changes since [version 1.1.1](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/1.1.1)
 in the [SVN development version](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/svn-last)
