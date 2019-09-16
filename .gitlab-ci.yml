@@ -178,9 +178,11 @@ document_help:
   before_script:
     - source build/setup.sh
   script:
-    - ./build/RooUnfoldTest -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest.txt 
+    - set +e
+    - ./build/RooUnfoldTest   -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest.txt 
     - ./build/RooUnfoldTest2D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest2D.txt 
     - ./build/RooUnfoldTest3D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest3D.txt 
+    - set -e
   artifacts:
     paths:
       - RooUnfoldTest*.txt
