@@ -170,6 +170,23 @@ doxygen:
     - cmake ..
     - make doxygen
 
+document_help:
+  <<: *standalone
+  stage: doc
+  dependencies:
+    - compile_cmake
+  before_script:
+    - source build/setup.sh
+  script:
+    - set +e
+    - ./build/RooUnfoldTest   -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest.txt 
+    - ./build/RooUnfoldTest2D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest2D.txt 
+    - ./build/RooUnfoldTest3D -h | awk '/^Usage:/,0{print $0"\r"}' > RooUnfoldTest3D.txt 
+    - set -e
+  artifacts:
+    paths:
+      - RooUnfoldTest*.txt
+
 doc_bayes_errors:
   <<: *latex
   script:
@@ -213,6 +230,7 @@ pages:
   - mkdir -p public
   - mv build/doxygen/html/* public
   - mv doc/*/*.pdf public
+  - mv RooUnfoldTest*.txt public
   - deploy-dfs
 
   before_script: []
@@ -222,6 +240,7 @@ pages:
 
   dependencies:
     - doxygen
+    - document_help
     - doc_bayes_errors
     - doc_phystat2011
     - doc_unfolding2010
