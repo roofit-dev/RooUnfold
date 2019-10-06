@@ -13,9 +13,9 @@ and Fergus Wilson. It can be used from the ROOT prompt, or linked
 against the ROOT libraries.
 
 There is extensive documentation available online:
-  - the excellent [http://statisticalmethods.web.cern.ch/StatisticalMethods/unfolding/RooUnfold_01-Methods/](RooUnfold tutorial) by Vince Croft
+  - the excellent [RooUnfold tutorial](http://statisticalmethods.web.cern.ch/StatisticalMethods/unfolding/RooUnfold_01-Methods) by Vince Croft
   - auto-generated [doxygen class documentation](http://roounfold.web.cern.ch/)
-  - the [https://gitlab.cern.ch/RooUnfold/RooUnfold](README) of the package itself
+  - the [README](https://gitlab.cern.ch/RooUnfold/RooUnfold) of the package itself
 
 See this overview of RooUnfold or the references below for more
 information. To cite the RooUnfold package in a publication, you can
@@ -115,7 +115,7 @@ distribution `TH1D` histograms for normalisation).
 
 This response object can be passed directly to the unfolding object,
 or written to a ROOT file for use at a later stage (search for
-`examples/RooUnfoldTest.cxx`'s stage parameter for an example of how to
+[`examples/RooUnfoldTest.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldTest.cxx)'s stage parameter for an example of how to
 do this).
 
 To do the unfolding (either to try different regularisation
@@ -159,9 +159,9 @@ See the [class documentation](https://roounfold.web.cern.ch) for
 details of the `RooUnfold` and `RooUnfoldResponse public` methods.
 
 A very simple example of RooUnfold's use is given in
-`examples/RooUnfoldExample.cxx`. More complete tests, using different
-toy MC distributions, are in `examples/RooUnfoldTest.cxx` and
-`examples/RooUnfoldTest2D.cxx`.
+[`examples/RooUnfoldExample.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldExample.cxx). More complete tests, using different
+toy MC distributions, are in [`examples/RooUnfoldTest.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldTest.cxx) and
+[`examples/RooUnfoldTest2D.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldTest2D.cxx).
 
 Choice of Regularisation Parameter
 ---
@@ -253,7 +253,7 @@ Alternatively, you can use `cmake`
 Running
 --------
 
-In an interactive ROOT shell, `RooUnfoldExample.cxx` makes a simple test of RooUnfold.
+In an interactive ROOT shell, [`RooUnfoldExample.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldExample.cxx) makes a simple test of RooUnfold.
 
     % root
     root [0] .L examples/RooUnfoldExample.cxx
@@ -315,12 +315,15 @@ For 2D and 3D examples look at RooUnfoldTest2D and RooUnfoldTest3D.
 Testing without RooFit
 ---
 
-The test programs, `examples/RooUnfoldTest.cxx`,
-`examples/RooUnfoldTest2D.cxx`, and `examples/RooUnfoldTest3D.cxx `use
-RooFit to generate the toy distributions. (`RooFit` is not required to
-use the `RooUnfold` classes from another program,
-eg. `examples/RooUnfoldExample.cxx`). Hand-coded alternatives are
-provided if ROOT was not build with `RooFit` enabled
+The test programs,
+[`examples/RooUnfoldTest.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldTest.cxx),
+[`examples/RooUnfoldTest2D.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldTest2D.cxx),
+and
+[`examples/RooUnfoldTest3D.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldTest3D.cxx)
+use RooFit to generate the toy distributions. (`RooFit` is not
+required to use the `RooUnfold` classes from another program,
+eg. [`examples/RooUnfoldExample.cxx`](https://gitlab.cern.ch/RooUnfold/RooUnfold/tree/master/examples/RooUnfoldExample.cxx)). Hand-coded
+alternatives are provided if ROOT was not build with `RooFit` enabled
 (eg. `--enable-roofit` not specified). This version generates peaked
 signal events over their full range, so may have a fewer events within
 the range than requested.
