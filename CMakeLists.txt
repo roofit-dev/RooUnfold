@@ -7,9 +7,7 @@ if (${RunningAtlasCI})
   include (CMakeLists_forAtlasCI.txt)
 endif()
 
-
 cmake_minimum_required(VERSION 2.8)
-enable_language (Fortran)
 
 find_package(AnalysisBase QUIET)
 find_package(AthAnalysis QUIET)
@@ -22,21 +20,29 @@ else()
 endif()
 
 # The project version number.
-set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   12   CACHE STRING "Project minor version number.")
+project(RooUnfold)
+set(VERSION_MAJOR   2   CACHE STRING "Project major version number.")
+set(VERSION_MINOR   0   CACHE STRING "Project minor version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR)
 
-find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit Graf Postscript Gpad)
+find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit HistFactory Graf Postscript Gpad XMLParser)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
 set(RooUnfoldDagostini ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes.for)
 file(GLOB RooUnfoldSources src/*.cxx)
-file(GLOB RooUnfoldHeaders src/*.h)
+file(GLOB RooUnfoldHeaders src/*.h src/*.tpp)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
 file(GLOB RooUnfoldExecSources examples/*.cxx)
 
 if(EXISTS ${RooUnfoldDagostini})
+  enable_language (Fortran)
   set(EXTRA_FLAGS "-DHAVE_DAGOSTINI")
+  get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+  if (Fortran_COMPILER_NAME MATCHES "gfortran")
+    set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none")
+  elseif (Fortran_COMPILER_NAME MATCHES "g77")
+    set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
+  endif()
 else()
   message("disabling d'Agostini implementation")
   file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
@@ -45,14 +51,11 @@ else()
   set(RooUnfoldDagostini "")  
 endif()
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}")
+execute_process( COMMAND ln -sf ${RooUnfoldHeaders} -t ${CMAKE_CURRENT_BINARY_DIR} )
 
-get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-if (Fortran_COMPILER_NAME MATCHES "gfortran")
-  set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none")
-elseif (Fortran_COMPILER_NAME MATCHES "g77")
-  set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
-endif()
+file(GLOB Tests "test/*.sh")
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS} -g -lRooFitCore")
 
 if(${foundAnalysisRelease})
   atlas_subdir( RooUnfold )
@@ -99,7 +102,7 @@ else()
   
   # generate the dictionary source code
   include(${ROOT_USE_FILE})
-  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
+  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS} -Wno-inconsistent-missing-override)
 
   # register the shared object to include both sources and dictionaries
   add_library( RooUnfold SHARED ${RooUnfoldSources} ${RooUnfoldDagostini} G__RooUnfold.cxx)
@@ -162,7 +165,7 @@ if (DOXYGEN_FOUND)
     message("Doxygen build started")
 
     # note the option ALL which allows to build the docs together with the application
-    add_custom_target( doxygen ALL
+    add_custom_target( doxygen
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
@@ -170,3 +173,4 @@ if (DOXYGEN_FOUND)
 else (DOXYGEN_FOUND)
   message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
+
