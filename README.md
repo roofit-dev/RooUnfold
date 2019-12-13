@@ -222,7 +222,7 @@ and approximate sample size &mdash; with ***k*** between 2 and the number of bin
 any corrections. You basically regularise away any differences,
 and only keep the leading term which is, by construction, the MC truth input.)
 
-[H&#246;cker and Kartvelishvili's paper](http://arxiv.org/abs/hep-ph/9509307)
+[Höcker and Kartvelishvili's paper](http://arxiv.org/abs/hep-ph/9509307)
 (section 7) describes how to choose the optimum value for ***k***.
 
 
