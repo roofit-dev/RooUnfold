@@ -17,9 +17,11 @@ There is extensive documentation available online:
   - RooUnfold package [README](README.md)
   - RooUnfold package [release notes](History.md)
 
-For support in using RooUnfold, please contact the package maintainers at roounfold-support@cern.ch.
-They are the primary author, [Tim Adye](mailto:T.J.Adye@rl.ac.uk) (or @adye), @cburgard, @lbrenner, and @pverschu.
-RooUnfold news, such as announcements of major new versions, will be reported to roounfold-announce@cern.ch, which you can subscribe to [here](https://e-groups.cern.ch/e-groups/EgroupsSubscription.do?egroupName=roounfold-announce).
+For support in using RooUnfold, please contact the package maintainers at [roounfold-support@cern.ch](mailto:roounfold-support@cern.ch).
+
+They are the primary author, [Tim Adye](mailto:T.J.Adye@rl.ac.uk) (or [adye](https://gitlab.cern.ch/adye)),
+and/or other package maintainers, [Carsten Burgard](mailto:cburgard@cern.ch) (or [cburgard](https://gitlab.cern.ch/cburgard)), [Lydia Brenner](mailto:lbrenner@cern.ch) (or [lbrenner](https://gitlab.cern.ch/lbrenner)), and [Pim Verschuuren](mailto:pverschu@cern.ch) (or [pverschu](https://gitlab.cern.ch/pverschu)).
+
 
 RooUnfold was written by Tim Adye, Carsten Burgard, Richard Claridge, Chris Meyer, Kerstin Tackmann, and Fergus Wilson.
 To cite the RooUnfold package in a publication, you can
@@ -220,7 +222,7 @@ and approximate sample size &mdash; with ***k*** between 2 and the number of bin
 any corrections. You basically regularise away any differences,
 and only keep the leading term which is, by construction, the MC truth input.)
 
-[H&#246;cker and Kartvelishvili's paper](http://arxiv.org/abs/hep-ph/9509307)
+[Höcker and Kartvelishvili's paper](http://arxiv.org/abs/hep-ph/9509307)
 (section 7) describes how to choose the optimum value for ***k***.
 
 
