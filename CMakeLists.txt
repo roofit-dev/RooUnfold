@@ -2,6 +2,8 @@
 # Project: RooUnfold
 ################################################################################
 
+project(RooUnfold)
+
 if (${RunningAtlasCI})
   message("Setup for CI in ATLAS analysis release")
   include (CMakeLists_forAtlasCI.txt)
