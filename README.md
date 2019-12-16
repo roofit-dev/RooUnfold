@@ -22,6 +22,8 @@ For support in using RooUnfold, please contact the package maintainers at [rooun
 They are the primary author, [Tim Adye](mailto:T.J.Adye@rl.ac.uk) (or [adye](https://gitlab.cern.ch/adye)),
 and/or other package maintainers, [Carsten Burgard](mailto:cburgard@cern.ch) (or [cburgard](https://gitlab.cern.ch/cburgard)), [Lydia Brenner](mailto:lbrenner@cern.ch) (or [lbrenner](https://gitlab.cern.ch/lbrenner)), and [Pim Verschuuren](mailto:pverschu@cern.ch) (or [pverschu](https://gitlab.cern.ch/pverschu)).
 
+RooUnfold news, such as announcements of major new versions, will be reported to a mailing list,
+which you can subscribe to [here](https://e-groups.cern.ch/e-groups/EgroupsSubscription.do?egroupName=roounfold-announce).
 
 RooUnfold was written by Tim Adye, Carsten Burgard, Richard Claridge, Chris Meyer, Kerstin Tackmann, and Fergus Wilson.
 To cite the RooUnfold package in a publication, you can
