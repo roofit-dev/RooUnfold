@@ -466,6 +466,7 @@ RooUnfoldIds::Probability( Double_t deviation, Double_t sigma, Double_t lambda )
 {
    if( lambda < 0.00001 ){ return 1.;}
    if( lambda > 1000. ){ return 0.;}
+   if( deviation == 0.0 && lambda*sigma == 0.0 ){ return 0.0; }
    return 1-exp(-pow(deviation/(sigma*lambda),2) );
 }
 
