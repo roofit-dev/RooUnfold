@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # ==============================================================================
-#  File and Version Information:
-#       $Id$
 #
-#  Description:
-#       Simple example usage of the RooUnfold package using toy MC.
-#
+#  Simple example usage of the RooUnfold package using toy MC.
 #  Author: Tim Adye <T.J.Adye@rl.ac.uk>
 #
 # ==============================================================================
@@ -14,8 +10,13 @@ import sys
 method = "bayes"
 if len(sys.argv) > 1: method = sys.argv[1]
 
-from ROOT import gRandom, TH1, TH1D, TCanvas, cout
 import ROOT
+from ROOT import gRandom, TH1, TH1D, TCanvas
+
+try:
+  cout= ROOT.std.cout   # This seems to work better in ROOT 6.22
+except:
+  cout= ROOT.cout
 
 # ==============================================================================
 #  Gaussian smearing, systematic translation, and variable inefficiency
@@ -63,7 +64,7 @@ elif method == "tunfold":
 elif method == "ids":
   unfold= ROOT.RooUnfoldIds     (response, hMeas, 3);    #  OR
 else:
-  print "Unknown method:",method
+  print ("Unknown method:",method)
   sys.exit(1)
 
 hReco= unfold.Hreco();
