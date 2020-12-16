@@ -135,9 +135,12 @@ else()
 
   if(NOT SKBUILD)
   # Install the RooUnfoldConfig.cmake and RooUnfoldConfigVersion.cmake
+#  install(FILES
+#    "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
+#    "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
+#    DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
   install(FILES
-    "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
-    "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
+    "${PROJECT_BINARY_DIR}/RooUnfoldConfig.cmake"
     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
   endif()
 
