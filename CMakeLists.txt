@@ -100,7 +100,19 @@ else()
 
   # generate the dictionary source code
   include(${ROOT_USE_FILE})
-  ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
+  if(SKBUILD)
+    # Relocatable installations need relative paths
+    set(RelativeRooUnfoldHeaders "")
+    foreach(path ${RooUnfoldHeaders})
+      get_filename_component(barename ${path} NAME)
+      list(APPEND RelativeRooUnfoldHeaders ${barename})
+    endforeach()
+    ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RelativeRooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
+    unset(barename)
+    unset(RelativeRooUnfoldHeaders)
+  else()
+    ROOT_GENERATE_DICTIONARY(G__RooUnfold ${RooUnfoldHeaders} LINKDEF ${RooUnfoldLinkDef} OPTIONS ${EXTRA_FLAGS})
+  endif()
 
   # register the shared object to include both sources and dictionaries
   add_library( RooUnfold SHARED ${RooUnfoldSources} ${RooUnfoldDagostini} G__RooUnfold.cxx)
@@ -121,11 +133,13 @@ else()
   configure_file(RooUnfoldConfig.cmake.in
     "${PROJECT_BINARY_DIR}/RooUnfoldConfig.cmake" @ONLY)
 
+  if(NOT SKBUILD)
   # Install the RooUnfoldConfig.cmake and RooUnfoldConfigVersion.cmake
   install(FILES
     "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
     "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
+  endif()
 
   include(CTest)
   enable_testing()
@@ -171,3 +185,21 @@ if (DOXYGEN_FOUND)
 else (DOXYGEN_FOUND)
   message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
+
+if (SKBUILD)
+    # install the compiled python module in src/RooUnfold to be picked up by the python wheels setup
+    install(TARGETS RooUnfold LIBRARY DESTINATION src/RooUnfold)
+    install(FILES ${RooUnfoldHeaders}
+      ${CMAKE_CURRENT_BINARY_DIR}/G__RooUnfold.cxx
+      ${CMAKE_CURRENT_BINARY_DIR}/libRooUnfold.rootmap
+      ${CMAKE_CURRENT_BINARY_DIR}/libRooUnfold_rdict.pcm DESTINATION
+      src/RooUnfold)
+
+    # Set the RPATH
+    if (APPLE)
+      set(rpath "@loader_path")
+    else()
+      set(rpath "$ORIGIN")
+    endif()
+    set_target_properties(RooUnfold PROPERTIES INSTALL_RPATH ${rpath})
+endif()

@@ -227,6 +227,14 @@ and only keep the leading term which is, by construction, the MC truth input.)
 [Höcker and Kartvelishvili's paper](http://arxiv.org/abs/hep-ph/9509307)
 (section 7) describes how to choose the optimum value for ***k***.
 
+Installing the Library
+----------------------
+
+This library can be installed via `pip` with version `10+`:
+
+```
+pip install git+https://gitlab.cern.ch/RooUnfold/RooUnfold@master
+```
 
 Building the Library
 --------------------

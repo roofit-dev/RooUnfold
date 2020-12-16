@@ -155,6 +155,15 @@ test_GNUmake:
   dependencies:
     - compile_GNUmake
 
+test_pip_install:
+  stage: test
+  image:
+    name: atlasamglab/stats-base:root6.22.00-python3.8
+    entrypoint: [""]
+  script:
+    - pip install .
+    - python -c "import RooUnfold; assert RooUnfold.__name__ == 'RooUnfold'"
+
 ############################################         
 ## documentation
 ############################################
