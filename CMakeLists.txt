@@ -12,6 +12,12 @@ endif()
 
 cmake_minimum_required(VERSION 2.8)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+  set(HAS_PARENT 0)
+else()
+  set(HAS_PARENT 1)
+endif()
+
 find_package(AnalysisBase QUIET)
 find_package(AthAnalysis QUIET)
 
@@ -56,6 +62,21 @@ endif()
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}")
 
 if(${foundAnalysisRelease})
+  # Set up the usage of CTest:
+  IF(NOT ${HAS_PARENT})
+    atlas_ctest_setup() # Set up the project:
+    atlas_project( RooUnfold 1.0.0
+      USE AnalysisBase ${AnalysisBase_VERSION} )
+
+    # Generate an environment setup script:
+    lcg_generate_env( SH_FILE ${CMAKE_BINARY_DIR}/${ATLAS_PLATFORM}/env_setup.sh )
+    install( FILES ${CMAKE_BINARY_DIR}/${ATLAS_PLATFORM}/env_setup.sh DESTINATION . )
+
+    # Set up the usage of CPack:
+    set(CMAKE_INSTALL_PREFIX /InstallArea/${BINARY_TAG})
+    atlas_cpack_setup()
+  ENDIF()
+
   atlas_subdir( RooUnfold )
 
   atlas_add_root_dictionary( RooUnfold _dictSource
@@ -75,6 +96,8 @@ if(${foundAnalysisRelease})
     PUBLIC_HEADERS RooUnfold
     PRIVATE_INCLUDE_DIRS ${ROOT_INCLUDE_DIRS}
     PRIVATE_LINK_LIBRARIES ${ROOT_LIBRARIES})
+
+  enable_testing()
 
   foreach(ExecSource ${RooUnfoldExecSources})
     get_filename_component(ExecName ${ExecSource} NAME_WE)
