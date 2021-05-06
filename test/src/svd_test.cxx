@@ -18,11 +18,16 @@
 #include <iostream>
 #include <fstream>
 
-TVector BuildRooUnfoldSVD()
+TVector BuildRooUnfoldSVD(int mode=0)
 {
-  TFile* f = new TFile("response.root","OPEN");  
+    char* filename;
+    if (mode==0)
+        filename = "response.root";
+    else if (mode==1)
+        filename = "response_var.root";
+  TFile* f = new TFile(filename,"OPEN");
   TH1D* h_meas = (TH1D*)f->Get("meas");
-  RooUnfoldResponse response = BuildRooUnfoldResponse();
+  RooUnfoldResponse response = BuildRooUnfoldResponse(filename);
   RooUnfoldSvd unfold(&response, h_meas, 20);
   TH1D* h_unfolded = (TH1D*)unfold.Hreco();
   TVector u(h_unfolded->GetNbinsX());
@@ -32,13 +37,18 @@ TVector BuildRooUnfoldSVD()
   return u;
 }
 
-void WriteRooUnfoldSVD()
+void WriteRooUnfoldSVD(int mode=0)
 {
-  TVector u = BuildRooUnfoldSVD();
-  std::ofstream ref;
-  ref.open("../ref/svd.ref");
-  for (int i=0;i<u.GetNrows();i++){
-    ref << u[i]<<std::endl;
-  }
-  ref.close();
+    TVector u = BuildRooUnfoldSVD(mode);
+    std::ofstream ref;
+    char* filename;
+    if (mode==0)
+        filename = "../ref/svd.ref";
+    else if (mode==1)
+        filename = "../ref/svd_var.ref";
+    ref.open(filename);
+    for (int i=0;i<u.GetNrows();i++){
+        ref << u[i]<<std::endl;
+    }
+    ref.close();
 }
