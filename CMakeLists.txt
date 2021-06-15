@@ -168,6 +168,12 @@ add_test(SVD test_svd)
 add_test(Invert test_invert)
 add_test(BinByBin test_bbb)
 
+file(GLOB test_python_bbb "test/src/bbb_test.py")
+add_test(
+  NAME BinByBin_python
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND python3 ${test_python_bbb}
+  )
 
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)
