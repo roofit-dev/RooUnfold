@@ -176,6 +176,13 @@ add_test(
   COMMAND python3 ${test_python_bbb}
   )
 
+file(GLOB test_python_bbb "test/test_something.py")
+  add_test(
+    NAME dummy_test
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test
+    COMMAND python3 ${test_python_bbb}
+    )
+
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)
 

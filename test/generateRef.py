@@ -25,8 +25,7 @@ def get_unfold(f):
     return u
 
 
-def get_field():
-    filename = "RooUnfoldTest.root"
+def get_field(filename):
     f =  TFile.Open(filename,"READ")
     u = get_unfold(f)
     # Add other fields you need
@@ -52,11 +51,9 @@ if __name__ == '__main__':
     combined_parm = get_combination(parms, list(parms.keys()))
     for single_parm in combined_parm:
         command_str = "../build/RooUnfoldTest " +  single_parm
-        print(command_str)
         os.system(command_str)
-        u = get_field()
+        u = get_field("RooUnfoldTest.root")
         all_output.append(u)
-    
+        os.system("rm RooUnfoldTest.root")
+        os.system("rm RooUnfoldTest.ps")
     write_field(all_output, ref_file_name)
-    os.system("rm RooUnfoldTest.root")
-    os.system("rm RooUnfoldTest.ps")
