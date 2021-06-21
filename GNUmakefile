@@ -210,7 +210,7 @@ endif
 
 # RooFit is included in ROOT if ROOT was compiled with --enable-roofit.
 # We only use it for better-normalised test distributions in RooUnfoldTest
-# (uses examples/RooUnfoldTestPdfRooFit.icc instead of examples/RooUnfoldTestPdf.icc).
+# (uses examples/RooUnfoldTestPdfRooFit.cxx instead of examples/RooUnfoldTestPdf.cxx).
 ifeq ($(NOROOFIT),)
 ifneq ($(shell $(RC) --has-roofit),yes)
 $(warning This version of ROOT does not support RooFit. We will build the test programs without it.)

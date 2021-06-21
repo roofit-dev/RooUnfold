@@ -290,7 +290,7 @@ You can also use python
 The example programs can also be run from the shell command line.
 More involved tests, allowing different toy MC PDFs to be used for training
 and testing, can be found in [`examples/RooUnfoldTest.cxx`](examples/RooUnfoldTest.cxx)
-(which uses test class [`RooUnfoldTestHarness`](examples/RooUnfoldTestHarness.icc)).
+(which uses test class [`RooUnfoldTestHarness`](examples/RooUnfoldTestHarness.cxx)).
 
     % make bin
     % ./RooUnfoldTest
