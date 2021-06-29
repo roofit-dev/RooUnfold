@@ -29,7 +29,6 @@ def get_uncertainty(f):
     u = ROOT.TVector(h_unfolded.GetNbinsX())
     for i in range(h_unfolded.GetNbinsX()):
         u[i] = h_unfolded.GetBinError(i+1)
-
     return u
 
 def get_field(filename, field_to_compare = ['unfold']):
@@ -49,11 +48,10 @@ def get_field(filename, field_to_compare = ['unfold']):
 
 def write_field(all_output, ref_file_name):
     with open(ref_file_name, 'w') as f:
-        for all_u in all_output:
-            for u in all_u:
-                for i in range(u.GetNrows()):
-                    f.write(str(u[i]))
-                    f.write('\n')
+        for u in all_output:
+            for i in range(u.GetNrows()):
+                f.write(str(u[i]))
+                f.write('\n')
 
 
 def delete_files():

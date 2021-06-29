@@ -54,8 +54,8 @@ if(EXISTS ${RooUnfoldDagostini})
   list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
   set(RooUnfoldDagostini "")
 endif()
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS} -fprofile-arcs -ftest-coverage")
+# -fprofile-arcs -ftest-coverage
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS} ")
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 if(${foundAnalysisRelease})
   atlas_subdir( RooUnfold )
@@ -188,6 +188,13 @@ add_test(
   NAME test_fakes
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
   COMMAND python3 ${test_fakes}
+  )
+
+file(GLOB test_bin_correlation "test/test_bin_correlation.py")
+add_test(
+  NAME test_bin_correlation
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_bin_correlation}
   )
 
 # first we can indicate the documentation build as an option and set it to ON by default

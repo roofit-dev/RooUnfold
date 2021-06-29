@@ -8,5 +8,3 @@ if __name__ == '__main__':
     test_name = 'test_fakes'
     field_to_compare = ['unfold']
     perform_test(parms, ref_file_name, test_name, field_to_compare)
-
-
