@@ -80,9 +80,14 @@ def compare(all_output, ref_file_name, test_name, allowed_difference):
             ctr += 1
     return 0
 
-def perform_test(parms, ref_file_name, test_name, field_to_compare, allowed_difference = 1):
+def perform_test(parms, ref_file_name, test_name, field_to_compare, allowed_difference = 1, is_combined = False):
     all_output = []
-    combined_parm = get_combination(parms, list(parms.keys()))
+    combined_parm = []
+    if is_combined:
+        combined_parm = parms
+    else:
+        combined_parm = get_combination(parms, list(parms.keys()))
+
     for single_parm in combined_parm:
         command_str = "../build/RooUnfoldTest " +  single_parm
         os.system(command_str)

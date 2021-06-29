@@ -197,6 +197,13 @@ add_test(
   COMMAND python3 ${test_bin_correlation}
   )
 
+file(GLOB test_uncertainty "test/test_uncertainty.py")
+add_test(
+  NAME test_uncertainty
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_uncertainty}
+  )
+
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)
 
