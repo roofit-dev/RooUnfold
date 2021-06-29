@@ -35,7 +35,7 @@ file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
 #file(GLOB RooUnfoldExecSources examples/*.cxx)
-file(GLOB RooUnfoldExecSources test/src/RooUnfoldTest.cxx)
+file(GLOB RooUnfoldExecSources test/src/RooUnfoldTest.cxx test/src/RooUnfoldTest2D.cxx test/src/RooUnfoldTest3D.cxx)
 file(GLOB RooUnfoldUnitTests test/*.cxx)
 
 if(EXISTS ${RooUnfoldDagostini})
@@ -203,6 +203,20 @@ add_test(
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
   COMMAND python3 ${test_uncertainty}
   )
+
+file(GLOB test_2D "test/test_2D.py")
+add_test(
+  NAME test_2D
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_2D}
+)
+
+file(GLOB test_3D "test/test_3D.py")
+add_test(
+  NAME test_3D
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_3D}
+)
 
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)

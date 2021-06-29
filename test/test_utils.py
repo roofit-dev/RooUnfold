@@ -23,6 +23,29 @@ def get_unfold(f):
 
     return u
 
+def get_unfold2D(f):
+    unfold = f.Get("unfold")
+    h_unfolded = unfold.Hreco()
+    u = ROOT.TVector(h_unfolded.GetNbinsX()*h_unfolded.GetNbinsY())
+    i = 0
+    for x in range(h_unfolded.GetNbinsX()):
+        for y in range(h_unfolded.GetNbinsY()):
+            u[i] = h_unfolded.GetBinContent(x+1, y+1)
+            i += 1
+    return u
+
+def get_unfold3D(f):
+    unfold = f.Get("unfold")
+    h_unfolded = unfold.Hreco()
+    u = ROOT.TVector(h_unfolded.GetNbinsX()*h_unfolded.GetNbinsY()*h_unfolded.GetNbinsZ())
+    i = 0
+    for x in range(h_unfolded.GetNbinsX()):
+        for y in range(h_unfolded.GetNbinsY()):
+            for z in range(h_unfolded.GetNbinsZ()):
+                u[i] = h_unfolded.GetBinContent(x+1, y+1, z+1)
+                i += 1
+    return u
+
 def get_uncertainty(f):
     unfold = f.Get("unfold")
     h_unfolded = unfold.Hreco()
@@ -88,17 +111,21 @@ def perform_test(parms, ref_file_name, test_name, field_to_compare, allowed_diff
     else:
         combined_parm = get_combination(parms, list(parms.keys()))
 
+    delete_files()
     for single_parm in combined_parm:
         command_str = "../build/RooUnfoldTest " +  single_parm
         os.system(command_str)
         u = get_field("RooUnfoldTest.root", field_to_compare)
         all_output.extend(u)
-        os.system("rm RooUnfoldTest.root")
-        os.system("rm RooUnfoldTest.ps")
+        delete_files()
 
     if compare(all_output, ref_file_name, test_name, allowed_difference) == 1:
         print("Test failed")
         exit(1)
 
 
-comparing_fields = {"unfold": get_unfold,"uncertainty":get_uncertainty}
+comparing_fields = {"unfold": get_unfold, 
+                    "uncertainty":get_uncertainty, 
+                    "unfold2D":get_unfold2D, 
+                    "unfold3D":get_unfold3D
+                }
