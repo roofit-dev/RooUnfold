@@ -56,7 +56,7 @@ if(EXISTS ${RooUnfoldDagostini})
 endif()
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS} -fprofile-arcs -ftest-coverage")
-
+set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 if(${foundAnalysisRelease})
   atlas_subdir( RooUnfold )
 
@@ -179,9 +179,16 @@ add_test(Bayes test_bayes)
 file(GLOB test_python_dummy "test/test_something.py")
   add_test(
     NAME dummy_test
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
     COMMAND python3 ${test_python_dummy}
     )
+
+file(GLOB test_fakes "test/test_fakes.py")
+add_test(
+  NAME test_fakes
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_fakes}
+  )
 
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)

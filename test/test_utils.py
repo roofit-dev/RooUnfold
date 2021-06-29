@@ -32,7 +32,7 @@ def get_uncertainty(f):
 
     return u
 
-def get_field(filename, field_to_compare):
+def get_field(filename, field_to_compare = ['unfold']):
     global comparing_fields
     f =  ROOT.TFile.Open(filename,"READ")
     u = []
@@ -49,10 +49,11 @@ def get_field(filename, field_to_compare):
 
 def write_field(all_output, ref_file_name):
     with open(ref_file_name, 'w') as f:
-        for u in all_output:
-            for i in range(u.GetNrows()):
-                f.write(str(u[i]))
-                f.write('\n')
+        for all_u in all_output:
+            for u in all_u:
+                for i in range(u.GetNrows()):
+                    f.write(str(u[i]))
+                    f.write('\n')
 
 
 def delete_files():

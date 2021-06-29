@@ -1,13 +1,19 @@
+import os
 from test_utils import *
 
 if __name__ == '__main__':
 
     parms = {
-        'method': ['1', '2'],
-        'ftestx': ['2', '3']
+        'method': ['1', '2', '3', '4', '5']
     }
-    ref_file_name = "../ref/put_test_name_here.ref"
-
+    ref_file_name = "../ref/something.ref"
+    test_name = 'something'
+    '''
+        parms = {
+        'addfakes': ['1']
+    }
+    ref_file_name = "../ref/test_fakes.ref"
+    '''
     all_output = []
     combined_parm = get_combination(parms, list(parms.keys()))
 
