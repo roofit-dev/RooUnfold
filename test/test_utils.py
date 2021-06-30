@@ -23,6 +23,15 @@ def get_unfold(f):
 
     return u
 
+def get_unfold_overflow(f):
+    unfold = f.Get("unfold")
+    h_unfolded = unfold.Hreco()
+    u = ROOT.TVector(h_unfolded.GetNbinsX()+2)
+    for i in range(h_unfolded.GetNbinsX()+2):
+        u[i] = h_unfolded.GetBinContent(i)
+
+    return u
+
 def get_unfold2D(f):
     unfold = f.Get("unfold")
     h_unfolded = unfold.Hreco()
@@ -127,5 +136,6 @@ def perform_test(parms, ref_file_name, test_name, field_to_compare, allowed_diff
 comparing_fields = {"unfold": get_unfold, 
                     "uncertainty":get_uncertainty, 
                     "unfold2D":get_unfold2D, 
-                    "unfold3D":get_unfold3D
+                    "unfold3D":get_unfold3D,
+                    "unfoldoverflow":get_unfold_overflow
                 }

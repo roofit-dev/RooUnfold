@@ -204,6 +204,13 @@ add_test(
   COMMAND python3 ${test_uncertainty}
   )
 
+file(GLOB test_overflow "test/test_overflow.py")
+add_test(
+  NAME test_overflow
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_overflow}
+)
+
 file(GLOB test_2D "test/test_2D.py")
 add_test(
   NAME test_2D

@@ -3,9 +3,16 @@ from test_utils import *
 
 if __name__ == '__main__':
 
-    '''
+    
+    parms = {
+        'overflow': ['1', '2']
+    }
+    ref_file_name = "../ref/overflow.ref"
+    test_name = 'overflow'
+    field_to_compare = ['unfoldoverflow']
+
     all_output = []
-    #combined_parm = get_combination(parms, list(parms.keys()))
+    combined_parm = get_combination(parms, list(parms.keys()))
 
     delete_files()
     for single_parm in combined_parm:
@@ -14,19 +21,7 @@ if __name__ == '__main__':
         u = get_field("RooUnfoldTest.root", field_to_compare)
         all_output.extend(u)
         delete_files()
-    '''
-    ref_file_name = "../ref/test_3D.ref"
-    test_name = 'test_3D'
-    field_to_compare = ['unfold3D']
-
-    all_output = []
-
-    command_str = "../build/RooUnfoldTest3D"
-    os.system(command_str)
-    u = get_field("RooUnfoldTest3D.root", field_to_compare)
-    all_output.extend(u)
-    delete_files()
-
+    
     write_field(all_output, ref_file_name)
 
 
@@ -100,5 +95,13 @@ os.system(command_str)
 u = get_field("RooUnfoldTest3D.root", field_to_compare)
 all_output.extend(u)
 delete_files()
+
+///// Underflow 
+parms = {
+    'overflow': ['1', '2']
+}
+ref_file_name = "../ref/overflow.ref"
+test_name = 'overflow'
+field_to_compare = ['unfoldoverflow']
 
 '''
