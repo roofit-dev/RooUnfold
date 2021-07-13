@@ -11,12 +11,12 @@ if __name__ == '__main__':
     test_name = 'test_3D'
     field_to_compare = ['unfold3D']
 
-    all_output = []
+    all_output = {}
     delete_files()
     command_str = "../build/RooUnfoldTest3D"
     os.system(command_str)
     u = get_field("RooUnfoldTest3D.root", field_to_compare)
-    all_output.extend(u)
+    all_output['default'] = u
     delete_files()
     if compare(all_output, ref_file_name, test_name, 1) == 1:
         print("Test failed")

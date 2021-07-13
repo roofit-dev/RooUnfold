@@ -176,11 +176,11 @@ add_test(Bayes test_bayes)
 #  COMMAND python3 ${test_python_bbb}
 #  )
 
-file(GLOB test_python_dummy "test/test_something.py")
+file(GLOB test_methods "test/test_methods.py")
   add_test(
-    NAME dummy_test
+    NAME test_methods
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
-    COMMAND python3 ${test_python_dummy}
+    COMMAND python3 ${test_methods}
     )
 
 file(GLOB test_fakes "test/test_fakes.py")
