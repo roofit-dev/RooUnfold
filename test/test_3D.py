@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     all_output = {}
     delete_files()
-    command_str = "../build/RooUnfoldTest3D"
+    command_str = "../build/RooUnfoldTest3D  verbose=3"
     os.system(command_str)
     u = get_field("RooUnfoldTest3D.root", field_to_compare)
     all_output['default'] = u

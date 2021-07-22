@@ -1,5 +1,5 @@
 {
-    "  seed=42 bincorr=1": {
+    "  verbose=3 seed=42 bincorr=1": {
         "uncertainty": [
             9.703617815586254,
             9.934300712032544,

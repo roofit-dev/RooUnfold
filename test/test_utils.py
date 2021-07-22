@@ -101,7 +101,6 @@ def compare(all_output, ref_file_name, test_name, allowed_difference):
     if len(data) != len(all_output):
         print("Number of parms not same")
         return 1
-
     for parm, value in data.items():
         for field, num_list in value.items():
             for i in range(len(num_list)):
@@ -116,7 +115,9 @@ def perform_test(parms, ref_file_name, test_name, field_to_compare, allowed_diff
     if is_combined:
         combined_parm = parms
     else:
-        combined_parm = get_combination(parms, list(parms.keys()))
+        parms_name = list(parms.keys())
+        parms_name.sort()
+        combined_parm = get_combination(parms, parms_name)
 
     delete_files()
     for single_parm in combined_parm:

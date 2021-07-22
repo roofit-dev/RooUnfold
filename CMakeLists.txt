@@ -55,7 +55,7 @@ if(EXISTS ${RooUnfoldDagostini})
   set(RooUnfoldDagostini "")
 endif()
 # -fprofile-arcs -ftest-coverage
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS} ")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}  -ftest-coverage  -fprofile-arcs ")
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 if(${foundAnalysisRelease})
   atlas_subdir( RooUnfold )
@@ -152,7 +152,7 @@ else()
   foreach(ExecSource ${RooUnfoldExecSources})
     get_filename_component(ExecName ${ExecSource} NAME_WE)
     add_executable( ${ExecName} ${ExecSource} )
-    target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} )
+    target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} gcov)
   endforeach()
 endif()
 
@@ -161,20 +161,13 @@ add_subdirectory(test)
 foreach(UnitTest ${RooUnfoldUnitTests})
     get_filename_component(Test ${UnitTest} NAME_WE)
     add_executable(${Test} ${UnitTest})
-    target_link_libraries(${Test} PUBLIC tests)
+    target_link_libraries(${Test} PUBLIC tests gcov)
 endforeach()
 
 add_test(Bayes test_bayes)
 #add_test(SVD test_svd)
 #add_test(Invert test_invert)
 #add_test(BinByBin test_bbb)
-
-#file(GLOB test_python_bbb "test/src/bbb_test.py")
-#add_test(
-#  NAME BinByBin_python
-#  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#  COMMAND python3 ${test_python_bbb}
-#  )
 
 file(GLOB test_methods "test/test_methods.py")
   add_test(
