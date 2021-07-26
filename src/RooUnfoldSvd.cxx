@@ -35,9 +35,6 @@
 
 #include "RooUnfoldResponse.h"
 
-#if (defined(HAVE_TSVDUNFOLD) && !HAVE_TSVDUNFOLD) && ROOT_VERSION_CODE < ROOT_VERSION(5,34,0)
-#define TSVDUNFOLD_LEAK 1
-#endif
 
 using std::cout;
 using std::cerr;
@@ -92,9 +89,6 @@ RooUnfoldSvd::Destroy()
 {
   delete _svd;
   delete _meas1d;
-#ifdef TSVDUNFOLD_LEAK
-  delete _meascov;
-#endif
   delete _train1d;
   delete _truth1d;
   delete _reshist;
@@ -223,9 +217,6 @@ RooUnfoldSvd::GetCov()
   }
 
   delete adetCov;
-#ifdef TSVDUNFOLD_LEAK
-  delete unfoldedCov;
-#endif
   TH1::AddDirectory (oldstat);
 
   _haveCov= true;
@@ -249,9 +240,6 @@ void RooUnfoldSvd::GetWgt()
     }
   }
 
-#ifdef TSVDUNFOLD_LEAK
-  delete unfoldedWgt;
-#endif
   TH1::AddDirectory (oldstat);
 
   _haveWgt= true;

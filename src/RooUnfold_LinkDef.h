@@ -19,8 +19,4 @@
 #pragma link C++ class RooUnfoldDagostini+;
 #endif
 #pragma link C++ class RooUnfoldIds-;
-#if !defined(HAVE_TSVDUNFOLD) || HAVE_TSVDUNFOLD
-#pragma link C++ class TSVDUnfold_130729+;
-#endif
-
 #endif

@@ -22,7 +22,6 @@
 #     To used the shared library: export LD_LIBRARY_PATH="$PWD:$LD_LIBRARY_PATH"
 #   - Add ROOTBUILD=debug for debug version.
 #   - Add VERBOSE=1 to show commands as they are executed.
-#   - Add HAVE_TSVDUNFOLD=0 to disable local version of TSVDUnfold and use version in ROOT.
 #
 # Build targets:
 #   help    - give brief help
@@ -187,25 +186,6 @@ FDEP          = $(SRCDIR)bayes_c.for
 CPPFLAGS     += -DHAVE_DAGOSTINI
 else
 EXCLUDE      += RooUnfoldDagostini.cxx RooUnfoldDagostini.h
-endif
-
-# TSVDUnfold is included in ROOT 5.28/00 and later, but we need changes yet to be added to ROOT.
-# So, use our own copy.
-ifeq ($(HAVE_TSVDUNFOLD),)
-###ifeq ($(wildcard $(ROOTINCDIR)/TSVDUnfold.h),)
-HAVE_TSVDUNFOLD = 1
-###else
-###ifneq ($(shell $(RC) --version | grep '^5\.28'),)
-###HAVE_TSVDUNFOLD = 1
-###endif
-###endif
-endif
-
-ifeq ($(HAVE_TSVDUNFOLD),1)
-CPPFLAGS     += -DHAVE_TSVDUNFOLD=1
-else
-CPPFLAGS     += -DHAVE_TSVDUNFOLD=0
-EXCLUDE      += TSVDUnfold.cxx TSVDUnfold_local.h
 endif
 
 # RooFit is included in ROOT if ROOT was compiled with --enable-roofit.
