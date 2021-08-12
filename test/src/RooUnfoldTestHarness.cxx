@@ -4,7 +4,7 @@
 //
 // Description:
 //      Test Harness class for the RooUnfold package using toy MC generated
-//      according to PDFs defined in RooUnfoldTestPdf.icc or RooUnfoldTestPdfRooFit.icc.
+//      according to PDFs defined in RooUnfoldTestPdf.cxx or RooUnfoldTestPdfRooFit.cxx.
 //
 // Authors: Tim Adye <T.J.Adye@rl.ac.uk> and Fergus Wilson <fwilson@slac.stanford.edu>
 //
@@ -56,10 +56,10 @@
 //==============================================================================
 
 #ifdef USE_ROOFIT
-#include "RooUnfoldTestPdfRooFit.icc"
+#include "RooUnfoldTestPdfRooFit.cxx"
 #include "RooRandom.h"
 #else
-#include "RooUnfoldTestPdf.icc"
+#include "RooUnfoldTestPdf.cxx"
 #endif
 
 #if !defined(__CINT__) || defined(__MAKECINT__)
@@ -587,7 +587,7 @@ void RooUnfoldTestHarness::PlotParms()
 TF1* RooUnfoldTestHarness::FitFunc (Int_t fpdf, TH1* h, Double_t mean, Double_t width, Double_t bkg)
 {
   // Implement PDFs as TF1 functions. These should match the functions defined in
-  // RooUnfoldTestPdf.icc or RooUnfoldTestPdfRooFit.icc.
+  // RooUnfoldTestPdf.cxx or RooUnfoldTestPdfRooFit.cxx.
   static const Double_t pi= atan2 (0.0, -1.0);
   if (bkg<0.0) bkg= 0.0;
   if (bkg>1.0) bkg= 1.0;

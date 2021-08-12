@@ -30,31 +30,16 @@ mark_as_advanced(VERSION_MAJOR VERSION_MINOR)
 find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit Graf Postscript Gpad)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
-set(RooUnfoldDagostini ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes.for)
 file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
-file(GLOB RooUnfoldExecSources examples/*.cxx)
+#file(GLOB RooUnfoldExecSources examples/*.cxx)
+file(GLOB RooUnfoldExecSources test/src/RooUnfoldTest.cxx test/src/RooUnfoldTest2D.cxx test/src/RooUnfoldTest3D.cxx)
+file(GLOB RooUnfoldUnitTests test/*.cxx)
 
-if(EXISTS ${RooUnfoldDagostini})
-  enable_language (Fortran)
-  set(EXTRA_FLAGS "-DHAVE_DAGOSTINI")
-  get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-  if (Fortran_COMPILER_NAME MATCHES "gfortran")
-    set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none")
-  elseif (Fortran_COMPILER_NAME MATCHES "g77")
-     set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
-  endif()
- else()
-  message("disabling d'Agostini implementation")
-  file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
-  list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
-  list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
-  set(RooUnfoldDagostini "")
-endif()
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}")
-
+# -fprofile-arcs -ftest-coverage
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}  -ftest-coverage  -fprofile-arcs ")
+set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 if(${foundAnalysisRelease})
   atlas_subdir( RooUnfold )
 
@@ -115,7 +100,7 @@ else()
   endif()
 
   # register the shared object to include both sources and dictionaries
-  add_library( RooUnfold SHARED ${RooUnfoldSources} ${RooUnfoldDagostini} G__RooUnfold.cxx)
+  add_library( RooUnfold SHARED ${RooUnfoldSources} G__RooUnfold.cxx)
 
   # link everything together at the end
   target_link_libraries( RooUnfold ${ROOT_LIBRARIES} )
@@ -146,24 +131,76 @@ else()
 
   include(CTest)
   enable_testing()
-
+  
   foreach(ExecSource ${RooUnfoldExecSources})
     get_filename_component(ExecName ${ExecSource} NAME_WE)
     add_executable( ${ExecName} ${ExecSource} )
-    target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} )
+    target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} gcov)
   endforeach()
+  add_subdirectory(test)
 endif()
 
-file(GLOB Tests "test/*.sh")
 
-foreach(TestScript ${Tests})
-  get_filename_component(TestName ${TestScript} NAME)
-  add_test(
-    NAME ${TestName}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND bash ${TestScript}
-    )
+
+foreach(UnitTest ${RooUnfoldUnitTests})
+    get_filename_component(Test ${UnitTest} NAME_WE)
+    add_executable(${Test} ${UnitTest})
+    target_link_libraries(${Test} PUBLIC tests gcov)
 endforeach()
+
+add_test(Bayes test_bayes)
+#add_test(SVD test_svd)
+#add_test(Invert test_invert)
+#add_test(BinByBin test_bbb)
+
+file(GLOB test_methods "test/test_methods.py")
+  add_test(
+    NAME test_methods
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+    COMMAND python3 ${test_methods}
+    )
+
+file(GLOB test_fakes "test/test_fakes.py")
+add_test(
+  NAME test_fakes
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_fakes}
+  )
+
+file(GLOB test_bin_correlation "test/test_bin_correlation.py")
+add_test(
+  NAME test_bin_correlation
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_bin_correlation}
+  )
+
+file(GLOB test_uncertainty "test/test_uncertainty.py")
+add_test(
+  NAME test_uncertainty
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_uncertainty}
+  )
+
+file(GLOB test_overflow "test/test_overflow.py")
+add_test(
+  NAME test_overflow
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_overflow}
+)
+
+file(GLOB test_2D "test/test_2D.py")
+add_test(
+  NAME test_2D
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_2D}
+)
+
+file(GLOB test_3D "test/test_3D.py")
+add_test(
+  NAME test_3D
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build
+  COMMAND python3 ${test_3D}
+)
 
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)

@@ -2,7 +2,7 @@ build
 doxygen
 *.dylib
 *.so
-
+settings.json
 # python
 *.egg-info
 __pycache__

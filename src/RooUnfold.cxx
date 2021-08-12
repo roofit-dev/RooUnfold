@@ -103,9 +103,6 @@
 #ifndef NOTUNFOLD
 #include "RooUnfoldTUnfold.h"
 #endif
-#ifdef HAVE_DAGOSTINI
-#include "RooUnfoldDagostini.h"
-#endif
 #include "RooUnfoldIds.h"
 
 using std::vector;
@@ -167,14 +164,6 @@ RooUnfold* RooUnfold::New (Algorithm alg, const RooUnfoldResponse* res, const TH
     case kInvert:
       unfold = new RooUnfoldInvert  (res,meas);
       break;
-    case kDagostini:
-#ifdef HAVE_DAGOSTINI
-      unfold = new RooUnfoldDagostini (res,meas);
-      break;
-#else
-      cerr << "RooUnfoldDagostini is not available" << endl;
-      return 0;
-#endif
     case kIDS:
       unfold= new RooUnfoldIds      (res, meas);
       break;
