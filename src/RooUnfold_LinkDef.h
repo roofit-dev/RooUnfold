@@ -15,8 +15,5 @@
 #ifndef NOTUNFOLD
 #pragma link C++ class RooUnfoldTUnfold+;
 #endif
-#ifdef HAVE_DAGOSTINI
-#pragma link C++ class RooUnfoldDagostini+;
-#endif
 #pragma link C++ class RooUnfoldIds-;
 #endif

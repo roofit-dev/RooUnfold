@@ -3,7 +3,7 @@ import os
 
 if __name__ == '__main__':
     parms = {
-        'method': ['1', '2', '3', '4', '5', '7'],
+        'method': ['1', '2', '3', '4', '5', '6'],
         'verbose': ['3']
     }
     ref_file_name = "../ref/test_methods.ref"

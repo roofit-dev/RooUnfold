@@ -31,7 +31,6 @@ public:
     kBinByBin,           //   RooUnfoldBinByBin
     kTUnfold,            //   RooUnfoldTUnfold
     kInvert,             //   RooUnfoldInvert
-    kDagostini,          //   RooUnfoldDagostini
     kIDS                 //   RooUnfoldIds
   };
 

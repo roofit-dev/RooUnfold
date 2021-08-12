@@ -2,7 +2,7 @@ RooUnfold: ROOT Unfolding Framework
 ===
 RooUnfold is a framework for unfolding (AKA "deconvolution" or "unsmearing"). It currently implements six methods:
 
-  - iterative ("Bayesian"; as proposed by [D'Agostini](https://arxiv.org/abs/1010.0632));
+  - iterative ("Bayesian");
   - singular value decomposition ([SVD](https://arxiv.org/abs/hep-ph/9509307), as proposed by Höcker and Kartvelishvili and implemented in [TSVDUnfold](https://root.cern.ch/doc/master/classTSVDUnfold.html));
   - bin-by-bin (simple correction factors);
   - an interface to the [TUnfold](https://root.cern.ch/doc/master/classTUnfold.html) method developed by [Stefan Schmitt](https://arxiv.org/abs/1205.6201);

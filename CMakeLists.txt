@@ -30,7 +30,6 @@ mark_as_advanced(VERSION_MAJOR VERSION_MINOR)
 find_package( ROOT COMPONENTS Tree Unfold Matrix Hist RIO MathCore Physics RooFitCore RooFit Graf Postscript Gpad)
 
 file(GLOB RooUnfoldLinkDef src/*_LinkDef.h)
-set(RooUnfoldDagostini ${CMAKE_CURRENT_SOURCE_DIR}/src/bayes.for)
 file(GLOB RooUnfoldSources src/*.cxx)
 file(GLOB RooUnfoldHeaders src/*.h)
 list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
@@ -38,22 +37,6 @@ list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldLinkDef})
 file(GLOB RooUnfoldExecSources test/src/RooUnfoldTest.cxx test/src/RooUnfoldTest2D.cxx test/src/RooUnfoldTest3D.cxx)
 file(GLOB RooUnfoldUnitTests test/*.cxx)
 
-if(EXISTS ${RooUnfoldDagostini})
-  enable_language (Fortran)
-  set(EXTRA_FLAGS "-DHAVE_DAGOSTINI")
-  get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-  if (Fortran_COMPILER_NAME MATCHES "gfortran")
-    set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none")
-  elseif (Fortran_COMPILER_NAME MATCHES "g77")
-     set (CMAKE_Fortran_FLAGS "-funroll-all-loops -fno-f2c -O3 -std=f95 -fimplicit-none -m32")
-  endif()
- else()
-  message("disabling d'Agostini implementation")
-  file(GLOB RooUnfoldDagostini src/RooUnfoldDagostini.*)
-  list(REMOVE_ITEM RooUnfoldHeaders ${RooUnfoldDagostini})
-  list(REMOVE_ITEM RooUnfoldSources ${RooUnfoldDagostini})
-  set(RooUnfoldDagostini "")
-endif()
 # -fprofile-arcs -ftest-coverage
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_FLAGS}  -ftest-coverage  -fprofile-arcs ")
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
@@ -117,7 +100,7 @@ else()
   endif()
 
   # register the shared object to include both sources and dictionaries
-  add_library( RooUnfold SHARED ${RooUnfoldSources} ${RooUnfoldDagostini} G__RooUnfold.cxx)
+  add_library( RooUnfold SHARED ${RooUnfoldSources} G__RooUnfold.cxx)
 
   # link everything together at the end
   target_link_libraries( RooUnfold ${ROOT_LIBRARIES} )
@@ -154,10 +137,11 @@ else()
     add_executable( ${ExecName} ${ExecSource} )
     target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} gcov)
   endforeach()
+  add_subdirectory(test)
 endif()
 
 
-add_subdirectory(test)
+
 foreach(UnitTest ${RooUnfoldUnitTests})
     get_filename_component(Test ${UnitTest} NAME_WE)
     add_executable(${Test} ${UnitTest})

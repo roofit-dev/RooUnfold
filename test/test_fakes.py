@@ -2,7 +2,7 @@ from test_utils import perform_test
 
 if __name__ == '__main__':
     parms = {
-        'method': ['1', '2', '3', '4', '5', '7'],
+        'method': ['1', '2', '3', '4', '5', '6'],
         'addfakes': ['1'],
         'verbose': ['3']
     }
