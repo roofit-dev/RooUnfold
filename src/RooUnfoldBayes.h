@@ -139,6 +139,7 @@ void RooUnfoldBayes::SetIterations (Int_t niter)
 {
   // Set regularisation parameter (number of iterations)
   _niter= niter;
+  ResetUnfold();
 }
 
 inline
@@ -146,6 +147,7 @@ void RooUnfoldBayes::SetSmoothing (Bool_t smoothit)
 {
   // Enable smoothing
   _smoothit= smoothit;
+  ResetUnfold();
 }
 
 inline

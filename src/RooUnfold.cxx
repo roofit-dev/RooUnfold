@@ -241,6 +241,10 @@ void RooUnfold::Init()
   GetSettings();
 }
 
+void RooUnfold::ResetUnfold(){
+  _unfolded = _have_err_mat = _haveCov = _haveErrors = _haveWgt = _fail = _haveCovMes = false;
+}
+
 RooUnfold& RooUnfold::Setup (const RooUnfoldResponse* res, const TH1* meas)
 {
   Reset();
@@ -252,9 +256,11 @@ RooUnfold& RooUnfold::Setup (const RooUnfoldResponse* res, const TH1* meas)
 void RooUnfold::SetMeasured (const TH1* meas)
 {
   //! Set measured distribution and errors. RooUnfold does not own the histogram.
+  ResetUnfold();
   _meas= meas;
   delete _vMes; _vMes= 0;
   delete _eMes; _eMes= 0;
+  
 }
 
 void RooUnfold::SetMeasured (const TVectorD& meas, const TVectorD& err)
@@ -295,6 +301,7 @@ void RooUnfold::SetMeasuredCov (const TMatrixD& cov)
     if (e>0.0) (*_eMes)[i]= sqrt(e);
   }
   _covMes= new TMatrixD (cov);
+  ResetUnfold();
   _haveCovMes= true;
 }
 
@@ -325,6 +332,7 @@ void RooUnfold::SetResponse (const RooUnfoldResponse* res)
     _nt += 2;
   }
   SetNameTitleDefault();
+  ResetUnfold();
 }
 
 void RooUnfold::SetResponse (RooUnfoldResponse* res, Bool_t takeOwnership)

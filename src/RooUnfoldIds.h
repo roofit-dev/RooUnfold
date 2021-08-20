@@ -151,6 +151,7 @@ void RooUnfoldIds::SetNIter(Int_t niter)
 {
    // Set number of iterations
    _niter = niter;
+   ResetUnfold();
 }
 
 inline
@@ -165,6 +166,7 @@ void RooUnfoldIds::SetLambdaM(Double_t lambdaM)
 {
    // Set number of iterations
    _lambdaMmin = lambdaM;
+   ResetUnfold();
 }
 
 inline
@@ -179,6 +181,7 @@ void RooUnfoldIds::SetLambdaU(Double_t lambdaU)
 {
    // Set number of iterations
    _lambdaUmin = lambdaU;
+   ResetUnfold();
 }
 
 inline
@@ -193,6 +196,7 @@ void RooUnfoldIds::SetLambdaL(Double_t lambdaL)
 {
    // Set number of iterations
    _lambdaL = lambdaL;
+   ResetUnfold();
 }
 
 inline
@@ -207,6 +211,7 @@ void RooUnfoldIds::SetLambdaS(Double_t lambdaS)
 {
    // Set number of iterations
    _lambdaS = lambdaS;
+   ResetUnfold();
 }
 
 inline
