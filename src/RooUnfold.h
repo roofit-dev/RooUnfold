@@ -121,6 +121,7 @@ protected:
   virtual void GetWgt(); // Get weight matrix using errors on measured distribution
   virtual void GetSettings();
   virtual Bool_t UnfoldWithErrors (ErrorTreatment withError, bool getWeights=false);
+  virtual void ResetUnfold();
 
   static TMatrixD CutZeros     (const TMatrixD& ereco);
   static TH1D*    HistNoOverflow (const TH1* h, Bool_t overflow);
@@ -294,6 +295,7 @@ void  RooUnfold::SetNToys (Int_t toys)
 {
   // Set number of toys used in kCovToy error calculation.
   _NToys= toys;
+  ResetUnfold();
 }
 
 inline

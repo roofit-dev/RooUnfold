@@ -301,6 +301,7 @@ RooUnfoldTUnfold::FixTau(Double_t tau)
   //! Fix regularisation parameter to a specified value
   _tau=tau;
   tau_set=true;
+  ResetUnfold();
 }
 
 void
@@ -317,6 +318,7 @@ RooUnfoldTUnfold::SetRegMethod(TUnfold::ERegMode regmethod)
       TUnfold::kRegModeCurvature    minimize the 2nd derivative of (x-x0)
    */
   _reg_method=regmethod;
+  ResetUnfold();
 }
 
 void
@@ -324,6 +326,7 @@ RooUnfoldTUnfold::OptimiseTau()
 {
   //! Choose optimal regularisation parameter
   tau_set=false;
+  ResetUnfold();
 }
 
 void

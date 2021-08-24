@@ -126,6 +126,7 @@ void RooUnfoldSvd::SetKterm (Int_t kreg)
 {
   // Set regularisation parameter
   _kreg= kreg;
+  ResetUnfold();
 }
 
 
@@ -136,7 +137,7 @@ Int_t RooUnfoldSvd::GetKterm() const
   return _kreg;
 }
 
-inline void RooUnfoldSvd::SetNtoysSVD (Int_t ntoyssvd) {_NToys=ntoyssvd;}  // no longer used
+inline void RooUnfoldSvd::SetNtoysSVD (Int_t ntoyssvd) {_NToys=ntoyssvd; ResetUnfold();}  // no longer used
 inline Int_t RooUnfoldSvd::GetNtoysSVD() const { return _NToys; }  // no longer used
 
 inline
